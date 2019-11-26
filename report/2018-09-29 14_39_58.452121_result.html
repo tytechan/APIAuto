@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>"并发上架"自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
+    
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
+table       { font-size: 110%; }
+pre         {  }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 20pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+	margin-left: 10px;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 12pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+    margin-left: 10px;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+    margin-left: 10px;
+}
+#header_row {
+    font-weight: bold;
+    color: #606060;
+    background-color: #f5f5f5;
+    border-top-width: 10px;
+    border-color: #d6e9c6;
+	font-size: 14px;
+}
+#result_table td {
+    border: 1px solid #f5f5f5;
+    padding: 2px;
+
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>"并发上架"自动化测试报告</h1>
+<p class='attribute'><strong>执行时间:</strong> 2018-09-29 14:39:58</p>
+<p class='attribute'><strong>执行时长:</strong> 0:00:03.342115</p>
+<p class='attribute'><strong>执行结果:</strong> 失败 1</p>
+
+<p class='description'>运行环境：500</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> 执行结果饼状图 </p>
+	<a class="btn btn-xs btn-info1">-成功-</a><br>
+	<a class="btn btn-xs btn-info2">-失败-</a><br>
+	<a class="btn btn-xs btn-info3">-异常-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
+
+
+<p id='show_detail_line' style="margin-left: 10px;">显示
+<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">摘要</a>
+<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">失败</a>
+<a href='javascript:showCase(2)' class="btn btn-xs btn-info">全部</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="panel-title">
+    <td>测试步骤/功能点</td>
+    <td>执行总数</td>
+    <td>成功</td>
+    <td>失败</td>
+    <td>异常</td>
+    <td>详情</td>
+</tr>
+
+<tr class='failClass'>
+    <td>Test_并发上架.CaigouContractsTest:  PDA扫码上架（并发） </td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',1)">详情</a></td>
+</tr>
+
+<tr id='ft1.1' class='none'>
+    <td class='failCase'><div class='testcase'>test01_box_uptray: 登陆500环境PDA后，扫码进行箱子上托盘</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >
+        失败</a>
+
+    <div id='div_ft1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.1: 📌该案例正常执行！
+🔼 全局变量 ENVIRONMENT 的值为： 500
+🔼 全局变量 MODULENAME 的值为： PDA扫码上架
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-并发上架
+🔼 登陆接口 的值为： /mobilelogin
+🔼 调用接口 的值为： /wms-core/uptray
+🔼 是否数据库初始化 的值为： None
+🔼 数据表中 并发流程数 的值为： 4
+🔼 数据表中 箱号-01 的值为： CSNF719579189
+🔼 数据表中 托盘 的值为： 1000000009
+🔼 数据表中 箱号-02 的值为： None
+🔼 数据表中 箱号-01 的值为： CSNF719579187
+🔼 数据表中 托盘 的值为： 1000000009
+🔼 数据表中 箱号-02 的值为： None
+🔼 数据表中 箱号-01 的值为： CSNF719579190
+🔼 数据表中 托盘 的值为： 1000000009
+🔼 数据表中 箱号-02 的值为： None
+🔼 数据表中 箱号-01 的值为： CSNF719579188
+🔼 数据表中 托盘 的值为： 1000000009
+🔼 数据表中 箱号-02 的值为： None
+🎈流程即将结束！
+🎈流程即将结束！
+🎈流程即将结束！
+🎈流程即将结束！
+📌流程开关中有值，流程终止！
+第 1 次进程中累计报错数为： 0
+📌流程开关中有值，流程终止！
+第 2 次进程中累计报错数为： 1
+📌流程开关中有值，流程终止！
+第 3 次进程中累计报错数为： 1
+📌流程开关中有值，流程终止！
+第 4 次进程中累计报错数为： 2
+Traceback (most recent call last):
+  File "E:\python相关\接口\项目\API自动化工程\interface\Test_并发上架.py", line 93, in test01_box_uptray
+    %(multiAccount,errAccount)
+AssertionError: 😭 箱子入托盘中，
+共需处理 '4' 个流程， 有 '2' 个失败！
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\python相关\接口\项目\API自动化工程\interface\Test_并发上架.py", line 98, in test01_box_uptray
+    raise AssertionError(e)
+AssertionError: 😭 箱子入托盘中，
+共需处理 '4' 个流程， 有 '2' 个失败！
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>汇总</td>
+    <td>1</td>
+    <td class="text text-success">0</td>
+    <td class="text text-danger">1</td>
+    <td class="text text-warning">0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "异常",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 1,
+		color : "#faebcc",
+		label: "失败",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 0,
+		color : "#d6e9c6",
+		label : "成功",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
+</body>
+</html>

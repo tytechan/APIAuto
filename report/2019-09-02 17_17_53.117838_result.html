@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>"审批流处理"自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
+    
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
+table       { font-size: 110%; }
+pre         {  }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 20pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+	margin-left: 10px;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 12pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+    margin-left: 10px;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+    margin-left: 10px;
+}
+#header_row {
+    font-weight: bold;
+    color: #606060;
+    background-color: #f5f5f5;
+    border-top-width: 10px;
+    border-color: #d6e9c6;
+	font-size: 14px;
+}
+#result_table td {
+    border: 1px solid #f5f5f5;
+    padding: 2px;
+
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>"审批流处理"自动化测试报告</h1>
+<p class='attribute'><strong>执行时间:</strong> 2019-09-02 17:17:53</p>
+<p class='attribute'><strong>执行时长:</strong> 0:00:08.924958</p>
+<p class='attribute'><strong>执行结果:</strong> 成功 1</p>
+
+<p class='description'>运行环境：810</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> 执行结果饼状图 </p>
+	<a class="btn btn-xs btn-info1">-成功-</a><br>
+	<a class="btn btn-xs btn-info2">-失败-</a><br>
+	<a class="btn btn-xs btn-info3">-异常-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
+
+
+<p id='show_detail_line' style="margin-left: 10px;">显示
+<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">摘要</a>
+<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">失败</a>
+<a href='javascript:showCase(2)' class="btn btn-xs btn-info">全部</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="panel-title">
+    <td>测试步骤/功能点</td>
+    <td>执行总数</td>
+    <td>成功</td>
+    <td>失败</td>
+    <td>异常</td>
+    <td>详情</td>
+</tr>
+
+<tr class='passClass'>
+    <td>Test_审批流处理.CaigouContractsTest:  审批流处理 </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',1)">详情</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_get_list_01: admin登陆，获取审批流processid、当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        成功</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 810
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+📦 返回值 审批状态 为: 
+🔼 数据表中 管理员登录名 的值为： admin_gl
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 单据号 的值为： JCD201907001599
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+📦 返回值 审批岗位 为: caiyouquan
+📦 返回值 审批状态 为: 审批中
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "approval_status": "2",
+        "data": {
+            "items": [
+                {
+                    "__v": 0,
+                    "_id": "5d232d81a242480c37176b0f",
+                    "controller": "productlend",
+                    "curreceiver": [
+                        "蔡友全"
+                    ],
+                    "doc": {
+                        "_id": "5d232d98ef4f2500372e81b1",
+                        "assist": {
+                            "deptowned": "5742a607779ec2cb740517f7",
+                            "groupowned": "5ce24ee573e8ba570f43545c",
+                            "groupownedAbove4": "5742a607779ec2cb740517ff",
+                            "itgroup": "it",
+                            "orgManagerLogin": "hanxiaoli",
+                            "orgowned": "5742a607779ec2cb740517f8",
+                            "orgs": [
+                                {
+                                    "_id": "5742a607779ec2cb740517f7",
+                                    "level": 0,
+                                    "orgname": "信息产品事业群",
+                                    "pid": "5742a607779ec2cb740517f6"
+                                },
+                                {
+                                    "_id": "5ce247ad21c8a35d0f1cd147",
+                                    "level": 1,
+                                    "orgname": "业务中心",
+                                    "pid": "5742a607779ec2cb740517f7"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f8",
+                                    "level": 2,
+                                    "orgname": "华为事业部",
+                                    "pid": "5ce247ad21c8a35d0f1cd147"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517ff",
+                                    "level": 3,
+                                    "orgname": "西南区",
+                                    "pid": "5742a607779ec2cb740517f8"
+                                },
+                                {
+                                    "_id": "5ce24ee573e8ba570f43545c",
+                                    "level": 4,
+                                    "orgname": "昆明办事处",
+                                    "pid": "5742a607779ec2cb740517ff"
+                                }
+                            ],
+                            "salegroup": "昆明办事处",
+                            "userroles": [
+                                "authority_bmdb_all",
+                                "sale",
+                                "sale",
+                                "approval_costcenter_manager",
+                                "approval_gmanager"
+                            ]
+                        },
+                        "content": {
+                            "model": {
+                                "attachment": "/upload/2019/6/3/转发- 答复- 测试借货_37ec15ba6095a4f9405c7c383a208cf0.eml",
+                                "client": {
+                                    "id": "1000004624",
+                                    "name": "华为技术有限公司",
+                                    "realname": "华为技术有限公司"
+                                },
+                                "code": "JCD201907001599",
+                                "corp": "1000",
+                                "creator": {
+                                    "_id": "591286fecd13e05df89eeefc",
+                                    "login": "hanxiaoli",
+                                    "name": "韩小丽",
+                                    "orgid": "5ce24ee573e8ba570f43545c",
+                                    "orgname": "昆明办事处",
+                                    "parentorgList": [
+                                        {
+                                            "_id": "5742a607779ec2cb740517f6",
+                                            "level": -1,
+                                            "orgname": "中建材信息技术股份有限公司",
+                                            "pid": null
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f7",
+                                            "level": 0,
+                                            "orgname": "信息产品事业群",
+                                            "pid": "5742a607779ec2cb740517f6"
+                                        },
+                                        {
+                                            "_id": "5ce247ad21c8a35d0f1cd147",
+                                            "level": 1,
+                                            "orgname": "业务中心",
+                                            "pid": "5742a607779ec2cb740517f7"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f8",
+                                            "level": 2,
+                                            "orgname": "华为事业部",
+                                            "pid": "5ce247ad21c8a35d0f1cd147"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517ff",
+                                            "level": 3,
+                                            "orgname": "西南区",
+                                            "pid": "5742a607779ec2cb740517f8"
+                                        },
+                                        {
+                                            "_id": "5ce24ee573e8ba570f43545c",
+                                            "level": 4,
+                                            "orgname": "昆明办事处",
+                                            "pid": "5742a607779ec2cb740517ff"
+                                        }
+                                    ]
+                                },
+                                "department": {
+                                    "id": "5ce24ee573e8ba570f43545c",
+                                    "id2": "5742a607779ec2cb740517f8",
+                                    "name": "昆明办事处",
+                                    "name2": "华为事业部"
+                                },
+                                "docName": "转发- 答复- 测试借货.eml",
+                                "lendbase": {
+                                    "advance_delivery": "否",
+                                    "days": 75,
+                                    "des": "云南省调查总队项目，还请艳芳用小丽姐系统提下借货，项目金额800万 部分已下单，借货时间2个月，\n 华为已回复邮件确认：此项目就是安可项目，客户现在做国产化替代，要求用完全国产设备，且服务器要在安可目录里面。",
+                                    "end": "2019-09-23",
+                                    "hascontract": "否",
+                                    "lendtype": "ZA1",
+                                    "productline": "服务器项目",
+                                    "productlineid": "F4",
+                                    "project_title": "云南省调查总队项目",
+                                    "renewdays": 0,
+                                    "start": "2019-07-10",
+                                    "sum": 25192.07,
+                                    "transferway": "01"
+                                },
+                                "processinfo": {
+                                    "inprocess": true
+                                },
+                                "products": [
+                                    {
+                                        "_id": "5d232d97ef4f2500372e81ad",
+                                        "changednum": null,
+                                        "code": "R-TS2280-F40",
+                                        "des": "12盘;2*Hi1616;128G;6*900G;SR430C;10GE",
+                                        "fhnum": 0,
+                                        "hideFlag": false,
+                                        "kynum": 2,
+                                        "money": 25192.07,
+                                        "notreturn": 0,
+                                        "outnum": 1,
+                                        "productcode": "R-TS2280",
+                                        "productnumber": "TaiShan 2280",
+                                        "returned": 0,
+                                        "selled": 0,
+                                        "stock": 2,
+                                        "unitprice": 25192.07
+                                    }
+                                ],
+                                "receivers": [
+                                    {
+                                        "address": "云南省昆明市西山区广福路488号红星财富中心B座33F",
+                                        "city": "530100",
+                                        "name": "李德高",
+                                        "phone": "18788131757",
+                                        "province": "53",
+                                        "tel": "",
+                                        "zipcode": ""
+                                    }
+                                ],
+                                "timestamp": "2019-07-08T11:48:39.909Z",
+                                "traderlogin": "menglingxue",
+                                "tradername": "孟苓雪",
+                                "user": {
+                                    "id": "591286fecd13e05df89eeefc",
+                                    "name": "韩小丽"
+                                }
+                            },
+                            "products": [
+                                {
+                                    "_id": "5d232d97ef4f2500372e81ad",
+                                    "changednum": null,
+                                    "code": "R-TS2280-F40",
+                                    "des": "12盘;2*Hi1616;128G;6*900G;SR430C;10GE",
+                                    "fhnum": 0,
+                                    "hideFlag": false,
+                                    "kynum": 2,
+                                    "money": 25192.07,
+                                    "notreturn": 0,
+                                    "outnum": 1,
+                                    "productcode": "R-TS2280",
+                                    "productnumber": "TaiShan 2280",
+                                    "returned": 0,
+                                    "selled": 0,
+                                    "stock": 2,
+                                    "unitprice": 25192.07
+                                }
+                            ],
+                            "receivers": [
+                                {
+                                    "address": "云南省昆明市西山区广福路488号红星财富中心B座33F",
+                                    "city": "530100",
+                                    "name": "李德高",
+                                    "phone": "18788131757",
+                                    "province": "53",
+                                    "tel": "",
+                                    "zipcode": ""
+                                }
+                            ]
+                        }
+                    },
+                    "nodeId": "5d6c8e40392ac6a245bdefa2",
+                    "nodes": [
+                        {
+                            "_id": "5d232d81a242480c37176b10",
+                            "children": [
+                                "5d6c8cdb45f06dab453e0b74"
+                            ],
+                            "comment": "申请审批",
+                            "comments": [
+                                {
+                                    "_id": "5d232d98ef4f2500372e81af",
+                                    "content": "申请审批",
+                                    "createDate": "2019-07-08T11:48:40.098Z"
+                                },
+                                {
+                                    "_id": "5d2407054a88a21d37516574",
+                                    "content": "暂存",
+                                    "createDate": "2019-07-09T03:16:21.630Z"
+                                },
+                                {
+                                    "_id": "5d2407084a88a21d37516580",
+                                    "content": "申请审批",
+                                    "createDate": "2019-07-09T03:16:24.805Z"
+                                },
+                                {
+                                    "_id": "5d253fee20dbb333a9cc099f",
+                                    "content": "暂存",
+                                    "createDate": "2019-07-10T01:31:26.859Z"
+                                },
+                                {
+                                    "_id": "5d253ff2e68e4246a9aca496",
+                                    "content": "申请审批",
+                                    "createDate": "2019-07-10T01:31:30.496Z"
+                                },
+                                {
+                                    "_id": "5d6c8cd76cd3c0bd45121e71",
+                                    "content": "暂存",
+                                    "createDate": "2019-09-02T03:30:31.313Z"
+                                },
+                                {
+                                    "_id": "5d6c8cdb45f06dab453e0b73",
+                                    "content": "申请审批",
+                                    "createDate": "2019-09-02T03:30:35.047Z"
+                                }
+                            ],
+                            "parents": [],
+                            "property": {
+                                "createDate": "2019-07-08T11:48:17.278Z",
+                                "finishDate": "2019-09-02T03:30:35.048Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "init"
+                            },
+                            "receiver": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d232d98ef4f2500372e81b0",
+                            "children": [],
+                            "comment": "无附件",
+                            "comments": [
+                                {
+                                    "_id": "5d23f17f59c65433a073a0a1",
+                                    "content": "无附件",
+                                    "createDate": "2019-07-09T01:44:31.041Z"
+                                }
+                            ],
+                            "parents": [
+                                "5d232d81a242480c37176b10"
+                            ],
+                            "property": {
+                                "createDate": "2019-07-08T11:48:40.099Z",
+                                "finishDate": "2019-09-02T03:29:35.218Z",
+                                "printed": 0,
+                                "status": "cancel",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d2407084a88a21d37516581",
+                            "children": [
+                                "5d2407e2c163104ea0520f48"
+                            ],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d232d81a242480c37176b10"
+                            ],
+                            "property": {
+                                "createDate": "2019-07-09T03:16:24.805Z",
+                                "finishDate": "2019-09-02T03:29:35.218Z",
+                                "printed": 0,
+                                "status": "cancel",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d2407e2c163104ea0520f48",
+                            "children": [],
+                            "comment": "泰山服务器目前只用于安可测试",
+                            "comments": [
+                                {
+                                    "_id": "5d243458a1ce7618379b4121",
+                                    "content": "泰山服务器目前只用于安可测试",
+                                    "createDate": "2019-07-09T06:29:44.831Z"
+                                }
+                            ],
+                            "parents": [
+                                "5d2407084a88a21d37516581"
+                            ],
+                            "property": {
+                                "createDate": "2019-07-09T03:20:02.664Z",
+                                "finishDate": "2019-09-02T03:29:35.218Z",
+                                "printed": 0,
+                                "status": "cancel",
+                                "type": "product_director"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051a1b",
+                                "login": "caiyouquan",
+                                "name": "蔡友全",
+                                "orgname": "产品部"
+                            },
+                            "sender": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgname": "库存组"
+                            }
+                        },
+                        {
+                            "_id": "5d253ff2e68e4246a9aca497",
+                            "children": [
+                                "5d25429156b6b013ac055eab"
+                            ],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d232d81a242480c37176b10"
+                            ],
+                            "property": {
+                                "createDate": "2019-07-10T01:31:30.497Z",
+                                "finishDate": "2019-09-02T03:29:35.218Z",
+                                "printed": 0,
+                                "status": "cancel",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d25429156b6b013ac055eab",
+                            "children": [],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d253ff2e68e4246a9aca497"
+                            ],
+                            "property": {
+                                "createDate": "2019-07-10T01:42:41.788Z",
+                                "finishDate": "2019-09-02T03:29:35.218Z",
+                                "printed": 0,
+                                "status": "repel",
+                                "type": "product_director"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051a1b",
+                                "login": "caiyouquan",
+                                "name": "蔡友全",
+                                "orgname": "产品部"
+                            },
+                            "sender": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgname": "库存组"
+                            }
+                        },
+                        {
+                            "_id": "5d6c8cdb45f06dab453e0b74",
+                            "children": [
+                                "5d6c8e366cd3c0bd45121e89"
+                            ],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d232d81a242480c37176b10"
+                            ],
+                            "property": {
+                                "createDate": "2019-09-02T03:30:35.049Z",
+                                "finishDate": "2019-09-02T03:36:22.730Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d6c8e366cd3c0bd45121e89",
+                            "children": [
+                                "5d6c8e40392ac6a245bdefa2"
+                            ],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d6c8cdb45f06dab453e0b74"
+                            ],
+                            "property": {
+                                "createDate": "2019-09-02T03:36:22.731Z",
+                                "finishDate": "2019-09-02T03:36:32.607Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "org5_gmanager"
+                            },
+                            "receiver": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgname": "昆明办事处"
+                            },
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgname": "库存组"
+                            }
+                        },
+                        {
+                            "_id": "5d6c8e40392ac6a245bdefa2",
+                            "children": [],
+                            "comments": [],
+                            "parents": [
+                                "5d6c8e366cd3c0bd45121e89"
+                            ],
+                            "property": {
+                                "createDate": "2019-09-02T03:36:32.608Z",
+                                "printed": 0,
+                                "status": "active",
+                                "type": "product_director"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051a1b",
+                                "login": "caiyouquan",
+                                "name": "蔡友全",
+                                "orgname": "产品部"
+                            },
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgname": "昆明办事处"
+                            }
+                        }
+                    ],
+                    "owner": {
+                        "_id": "591286fecd13e05df89eeefc",
+                        "login": "hanxiaoli",
+                        "name": "韩小丽",
+                        "orgid": "5ce24ee573e8ba570f43545c",
+                        "orgname": "昆明办事处"
+                    },
+                    "processId": "5d232d81a242480c37176b0f",
+                    "processlog": [
+                        {
+                            "_id": "5d232d98ef4f2500372e81ae",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-07-08T11:48:40.063Z",
+                            "finishDate": "2019-07-08T11:48:40.063Z",
+                            "keepDate": "",
+                            "nodeid": "5d232d81a242480c37176b10",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d23f17f59c65433a073a0a0",
+                            "content": {
+                                "changes": [],
+                                "comment": "无附件"
+                            },
+                            "createDate": "2019-07-08T11:48:40.063Z",
+                            "finishDate": "2019-07-09T01:44:31.009Z",
+                            "keepDate": "13小时56分",
+                            "nodeid": "5d232d98ef4f2500372e81b0",
+                            "nodetype": "supplychain",
+                            "operation": "驳回原点",
+                            "operator": "cancel",
+                            "sender": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgid": "5ce24cba73e8ba570f435438",
+                                "orgname": "库存组"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d2407084a88a21d3751657f",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-07-09T01:44:31.009Z",
+                            "finishDate": "2019-07-09T03:16:24.765Z",
+                            "keepDate": "1小时32分",
+                            "nodeid": "5d232d81a242480c37176b10",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d2407e2c163104ea0520f47",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-07-09T03:16:24.765Z",
+                            "finishDate": "2019-07-09T03:20:02.635Z",
+                            "keepDate": "4分",
+                            "nodeid": "5d2407084a88a21d37516581",
+                            "nodetype": "supplychain",
+                            "operation": "通过",
+                            "sender": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgid": "5ce24cba73e8ba570f435438",
+                                "orgname": "库存组"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d243458a1ce7618379b4120",
+                            "content": {
+                                "changes": [],
+                                "comment": "泰山服务器目前只用于安可测试"
+                            },
+                            "createDate": "2019-07-09T03:20:02.635Z",
+                            "finishDate": "2019-07-09T06:29:44.802Z",
+                            "keepDate": "3小时10分",
+                            "nodeid": "5d2407e2c163104ea0520f48",
+                            "nodetype": "product_director",
+                            "operation": "驳回原点",
+                            "operator": "cancel",
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051a1b",
+                                "login": "caiyouquan",
+                                "name": "蔡友全",
+                                "orgid": "5ce2482573e8ba570f435407",
+                                "orgname": "产品部"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d253ff2e68e4246a9aca495",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-07-09T06:29:44.802Z",
+                            "finishDate": "2019-07-10T01:31:30.471Z",
+                            "keepDate": "19小时2分",
+                            "nodeid": "5d232d81a242480c37176b10",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d25429156b6b013ac055eaa",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-07-10T01:31:30.471Z",
+                            "finishDate": "2019-07-10T01:42:41.760Z",
+                            "keepDate": "12分",
+                            "nodeid": "5d253ff2e68e4246a9aca497",
+                            "nodetype": "supplychain",
+                            "operation": "通过",
+                            "sender": {
+                                "_id": "5a7430011f8971cf8c60505a",
+                                "login": "guanxiaohong",
+                                "name": "管晓红",
+                                "orgid": "5ce24cba73e8ba570f435438",
+                                "orgname": "库存组"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d6c8c9f8038f29d45686d19",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-07-10T01:42:41.760Z",
+                            "finishDate": "2019-09-02T03:29:35.214Z",
+                            "keepDate": "54天1小时47分",
+                            "nodeid": "5d25429156b6b013ac055eab",
+                            "nodetype": "product_director",
+                            "operation": "驳回原点",
+                            "operator": "cancel",
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051a1b",
+                                "login": "caiyouquan",
+                                "name": "蔡友全",
+                                "orgid": "5ce2482573e8ba570f435407",
+                                "orgname": "产品部"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d6c8cdb45f06dab453e0b72",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-09-02T03:29:35.214Z",
+                            "finishDate": "2019-09-02T03:30:35.031Z",
+                            "keepDate": "1分",
+                            "nodeid": "5d232d81a242480c37176b10",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d6c8e366cd3c0bd45121e88",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-09-02T03:30:35.031Z",
+                            "finishDate": "2019-09-02T03:36:22.714Z",
+                            "keepDate": "6分",
+                            "nodeid": "5d6c8cdb45f06dab453e0b74",
+                            "nodetype": "supplychain",
+                            "operation": "通过",
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgid": "5ce24cba73e8ba570f435438",
+                                "orgname": "库存组"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d6c8e40392ac6a245bdefa1",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-09-02T03:36:22.714Z",
+                            "finishDate": "2019-09-02T03:36:32.588Z",
+                            "keepDate": "1分",
+                            "nodeid": "5d6c8e366cd3c0bd45121e89",
+                            "nodetype": "org5_gmanager",
+                            "operation": "通过",
+                            "sender": {
+                                "_id": "591286fecd13e05df89eeefc",
+                                "login": "hanxiaoli",
+                                "name": "韩小丽",
+                                "orgid": "5ce24ee573e8ba570f43545c",
+                                "orgname": "昆明办事处"
+                            },
+                            "status": ""
+                        }
+                    ],
+                    "property": {
+                        "createDate": "2019-07-08T11:48:17.278Z",
+                        "finishDate": "2019-09-02T03:36:32.611Z",
+                        "printed": 0,
+                        "status": "active",
+                        "type": "JCD"
+                    },
+                    "subscribers": []
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>汇总</td>
+    <td>1</td>
+    <td class="text text-success">1</td>
+    <td class="text text-danger">0</td>
+    <td class="text text-warning">0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "异常",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 0,
+		color : "#faebcc",
+		label: "失败",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 1,
+		color : "#d6e9c6",
+		label : "成功",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
+</body>
+</html>

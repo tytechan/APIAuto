@@ -1,0 +1,3522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>"审批流处理"自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
+    
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
+table       { font-size: 110%; }
+pre         {  }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 20pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+	margin-left: 10px;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 12pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+    margin-left: 10px;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+    margin-left: 10px;
+}
+#header_row {
+    font-weight: bold;
+    color: #606060;
+    background-color: #f5f5f5;
+    border-top-width: 10px;
+    border-color: #d6e9c6;
+	font-size: 14px;
+}
+#result_table td {
+    border: 1px solid #f5f5f5;
+    padding: 2px;
+
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>"审批流处理"自动化测试报告</h1>
+<p class='attribute'><strong>执行时间:</strong> 2019-06-26 11:18:30</p>
+<p class='attribute'><strong>执行时长:</strong> 0:01:16.622405</p>
+<p class='attribute'><strong>执行结果:</strong> 成功 42 失败 1</p>
+
+<p class='description'>运行环境：510</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> 执行结果饼状图 </p>
+	<a class="btn btn-xs btn-info1">-成功-</a><br>
+	<a class="btn btn-xs btn-info2">-失败-</a><br>
+	<a class="btn btn-xs btn-info3">-异常-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
+
+
+<p id='show_detail_line' style="margin-left: 10px;">显示
+<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">摘要</a>
+<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">失败</a>
+<a href='javascript:showCase(2)' class="btn btn-xs btn-info">全部</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="panel-title">
+    <td>测试步骤/功能点</td>
+    <td>执行总数</td>
+    <td>成功</td>
+    <td>失败</td>
+    <td>异常</td>
+    <td>详情</td>
+</tr>
+
+<tr class='failClass'>
+    <td>Test_审批流处理.CaigouContractsTest:  审批流处理 </td>
+    <td>43</td>
+    <td>42</td>
+    <td>1</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',43)">详情</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_get_list_01: admin登陆，获取审批流processid、当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        成功</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+📦 返回值 审批状态 为: 
+🔼 数据表中 管理员登录名 的值为： admin_gl
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 单据号 的值为： JCDA1906000795
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+📦 返回值 审批岗位 为: houwenjie
+📦 返回值 审批状态 为: 审批中
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "approval_status": "2",
+        "data": {
+            "items": [
+                {
+                    "__v": 0,
+                    "_id": "5d0f28aec299fdbe4fef83e5",
+                    "controller": "productlend",
+                    "curreceiver": [
+                        "侯文杰"
+                    ],
+                    "doc": {
+                        "_id": "5d0f28aec299fdbe4fef83e6",
+                        "assist": {
+                            "deptowned": "5742a607779ec2cb740517f7",
+                            "groupowned": "5ce24eda73e8ba570f435458",
+                            "groupownedAbove4": "5742a607779ec2cb740517ff",
+                            "itgroup": "it",
+                            "orgowned": "5742a607779ec2cb740517f8",
+                            "orgs": [
+                                {
+                                    "_id": "5742a607779ec2cb740517f7",
+                                    "level": 0,
+                                    "orgname": "信息产品事业群",
+                                    "pid": "5742a607779ec2cb740517f6"
+                                },
+                                {
+                                    "_id": "5ce247ad21c8a35d0f1cd147",
+                                    "level": 1,
+                                    "orgname": "业务中心",
+                                    "pid": "5742a607779ec2cb740517f7"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f8",
+                                    "level": 2,
+                                    "orgname": "华为事业部",
+                                    "pid": "5ce247ad21c8a35d0f1cd147"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517ff",
+                                    "level": 3,
+                                    "orgname": "西南区",
+                                    "pid": "5742a607779ec2cb740517f8"
+                                },
+                                {
+                                    "_id": "5ce24eda73e8ba570f435458",
+                                    "level": 4,
+                                    "orgname": "成都办事处",
+                                    "pid": "5742a607779ec2cb740517ff"
+                                }
+                            ],
+                            "salegroup": "成都办事处",
+                            "userroles": [
+                                "authority_bmdb_all",
+                                "sale",
+                                "sale",
+                                "approval_costcenter_manager",
+                                "approval_gmanager"
+                            ]
+                        },
+                        "content": {
+                            "model": {
+                                "client": {
+                                    "id": "1000006065",
+                                    "name": "华为软件技术有限公司",
+                                    "realname": "华为软件技术有限公司"
+                                },
+                                "code": "JCDA1906000795",
+                                "corp": "1000",
+                                "creator": {
+                                    "_id": "5742a607779ec2cb740518ff",
+                                    "login": "hejin",
+                                    "name": "何晋",
+                                    "orgid": "5ce24eda73e8ba570f435458",
+                                    "orgname": "成都办事处",
+                                    "parentorgList": [
+                                        {
+                                            "_id": "5742a607779ec2cb740517f6",
+                                            "level": -1,
+                                            "orgname": "中建材信息技术股份有限公司",
+                                            "pid": null
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f7",
+                                            "level": 0,
+                                            "orgname": "信息产品事业群",
+                                            "pid": "5742a607779ec2cb740517f6"
+                                        },
+                                        {
+                                            "_id": "5ce247ad21c8a35d0f1cd147",
+                                            "level": 1,
+                                            "orgname": "业务中心",
+                                            "pid": "5742a607779ec2cb740517f7"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f8",
+                                            "level": 2,
+                                            "orgname": "华为事业部",
+                                            "pid": "5ce247ad21c8a35d0f1cd147"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517ff",
+                                            "level": 3,
+                                            "orgname": "西南区",
+                                            "pid": "5742a607779ec2cb740517f8"
+                                        },
+                                        {
+                                            "_id": "5ce24eda73e8ba570f435458",
+                                            "level": 4,
+                                            "orgname": "成都办事处",
+                                            "pid": "5742a607779ec2cb740517ff"
+                                        }
+                                    ]
+                                },
+                                "department": {
+                                    "id": "5ce24eda73e8ba570f435458",
+                                    "id2": "5742a607779ec2cb740517f8",
+                                    "name": "成都办事处",
+                                    "name2": "华为事业部"
+                                },
+                                "lendbase": {
+                                    "advance_delivery": "否",
+                                    "days": 19,
+                                    "des": "自动化1906239867",
+                                    "end": "2019-04-29",
+                                    "hascontract": "是",
+                                    "lendtype": "ZA1",
+                                    "productline": "数通项目",
+                                    "productlineid": "F1",
+                                    "project_title": "自动化1906239867",
+                                    "renewdays": 0,
+                                    "start": "2019-04-10",
+                                    "sum": 3030.77,
+                                    "transferway": "01"
+                                },
+                                "processinfo": {
+                                    "inprocess": true
+                                },
+                                "products": [
+                                    {
+                                        "_id": "5d0f28af42a6c1b24f9c4b41",
+                                        "changednum": null,
+                                        "code": "02131120-F990",
+                                        "des": "2200W交流电源模块",
+                                        "fhnum": 0,
+                                        "kynum": -1,
+                                        "money": 3030.77,
+                                        "notreturn": 0,
+                                        "outnum": 1,
+                                        "productcode": "02131120",
+                                        "productnumber": "PAC-2200WF",
+                                        "returned": 0,
+                                        "selled": 0,
+                                        "stock": 2,
+                                        "unitprice": 3030.77
+                                    }
+                                ],
+                                "receivers": [
+                                    {
+                                        "address": "青年邻居",
+                                        "city": "370300",
+                                        "name": "王思鲲",
+                                        "phone": "15177779999",
+                                        "province": "37",
+                                        "tel": "",
+                                        "zipcode": "665123"
+                                    }
+                                ],
+                                "timestamp": "2019-06-23T07:22:23.335Z",
+                                "traderlogin": "shichen",
+                                "tradername": "石晨",
+                                "user": {
+                                    "id": "5742a607779ec2cb740518ff",
+                                    "name": "何晋"
+                                }
+                            }
+                        }
+                    },
+                    "nodeId": "5d0f28af42a6c1b24f9c4b4b",
+                    "nodes": [
+                        {
+                            "_id": "5d0f28aec299fdbe4fef83e7",
+                            "children": [
+                                "5d0f28af42a6c1b24f9c4b4b"
+                            ],
+                            "comment": "申请审批",
+                            "comments": [
+                                {
+                                    "_id": "5d0f28af42a6c1b24f9c4b4a",
+                                    "content": "申请审批",
+                                    "createDate": "2019-06-23T07:22:23.486Z"
+                                }
+                            ],
+                            "parents": [],
+                            "property": {
+                                "createDate": "2019-06-23T07:22:22.109Z",
+                                "finishDate": "2019-06-23T07:22:23.487Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "init"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d0f28af42a6c1b24f9c4b4b",
+                            "children": [],
+                            "comments": [],
+                            "parents": [
+                                "5d0f28aec299fdbe4fef83e7"
+                            ],
+                            "property": {
+                                "createDate": "2019-06-23T07:22:23.488Z",
+                                "printed": 0,
+                                "status": "active",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            }
+                        }
+                    ],
+                    "owner": {
+                        "_id": "5742a607779ec2cb740518ff",
+                        "login": "hejin",
+                        "name": "何晋",
+                        "orgid": "5ce24eda73e8ba570f435458",
+                        "orgname": "成都办事处"
+                    },
+                    "processId": "5d0f28aec299fdbe4fef83e5",
+                    "processlog": [
+                        {
+                            "_id": "5d0f28af42a6c1b24f9c4b49",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-06-23T07:22:23.456Z",
+                            "finishDate": "2019-06-23T07:22:23.456Z",
+                            "keepDate": "",
+                            "nodeid": "5d0f28aec299fdbe4fef83e7",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            },
+                            "status": ""
+                        }
+                    ],
+                    "property": {
+                        "createDate": "2019-06-23T07:22:22.109Z",
+                        "finishDate": "2019-06-23T07:22:23.490Z",
+                        "printed": 0,
+                        "status": "active",
+                        "type": "JCD"
+                    },
+                    "subscribers": []
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_get_mydoing_01: admin登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.2')" >
+        成功</a>
+
+    <div id='div_pt1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.2: 📌该案例正常执行！
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 当前节点处理人 的值为： houwenjie
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 审批岗位 的值为： houwenjie
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'data': {'total': 1, 'items': [{'doc': {'assist': {'orgowned': '5742a607779ec2cb740517f8', 'salegroup': '成都办事处', 'orgs': [{'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'itgroup': 'it', 'userroles': ['authority_bmdb_all', 'sale', 'sale', 'approval_costcenter_manager', 'approval_gmanager'], 'deptowned': '5742a607779ec2cb740517f7', 'groupownedAbove4': '5742a607779ec2cb740517ff', 'groupowned': '5ce24eda73e8ba570f435458'}, 'content': {'model': {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'traderlogin': 'shichen', 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}}, '_id': '5d0f28aec299fdbe4fef83e6'}, 'controller': 'productlend', 'subscribers': [], '__v': 0, 'processId': '5d0f28aec299fdbe4fef83e5', 'property': {'type': 'JCD', 'createDate': '2019-06-23T07:22:22.109Z', 'status': 'active', 'printed': 0, 'finishDate': '2019-06-23T07:22:23.490Z'}, '_id': '5d0f28aec299fdbe4fef83e5', 'nodeId': '5d0f28af42a6c1b24f9c4b4b', 'processlog': [{'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}, 'operation': '提交', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d0f28af42a6c1b24f9c4b49', 'status': '', 'keepDate': '', 'nodetype': 'init', 'finishDate': '2019-06-23T07:22:23.456Z', 'content': {'comment': '申请审批', 'changes': []}, 'nodeid': '5d0f28aec299fdbe4fef83e7'}], 'curreceiver': ['侯文杰'], 'owner': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}, 'nodes': [{'comments': [{'createDate': '2019-06-23T07:22:23.486Z', 'content': '申请审批', '_id': '5d0f28af42a6c1b24f9c4b4a'}], 'children': ['5d0f28af42a6c1b24f9c4b4b'], '_id': '5d0f28aec299fdbe4fef83e7', 'comment': '申请审批', 'property': {'type': 'init', 'createDate': '2019-06-23T07:22:22.109Z', 'status': 'approve', 'printed': 0, 'finishDate': '2019-06-23T07:22:23.487Z'}, 'parents': [], 'receiver': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}}, {'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}, 'comments': [], 'children': [], '_id': '5d0f28af42a6c1b24f9c4b4b', 'property': {'type': 'supplychain', 'createDate': '2019-06-23T07:22:23.488Z', 'printed': 0, 'status': 'active'}, 'parents': ['5d0f28aec299fdbe4fef83e7'], 'receiver': {'orgname': '库存组', 'login': 'houwenjie', 'name': '侯文杰', '_id': '5742a607779ec2cb74051aad'}}]}], 'totalpage': 1}, 'approval_status': '2'}, 'msg': 'OK'}
+🔼 全局变量 CASENAME 的值为： test01_get_list_01
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 单据号 的值为： JCDA1906000795
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "rst": {
+        "data": {
+            "items": [
+                {
+                    "content": {
+                        "model": {
+                            "client": {
+                                "id": "1000006065",
+                                "name": "华为软件技术有限公司",
+                                "realname": "华为软件技术有限公司"
+                            },
+                            "code": "JCDA1906000795",
+                            "corp": "1000",
+                            "creator": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处",
+                                "parentorgList": [
+                                    {
+                                        "_id": "5742a607779ec2cb740517f6",
+                                        "level": -1,
+                                        "orgname": "中建材信息技术股份有限公司",
+                                        "pid": null
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517f7",
+                                        "level": 0,
+                                        "orgname": "信息产品事业群",
+                                        "pid": "5742a607779ec2cb740517f6"
+                                    },
+                                    {
+                                        "_id": "5ce247ad21c8a35d0f1cd147",
+                                        "level": 1,
+                                        "orgname": "业务中心",
+                                        "pid": "5742a607779ec2cb740517f7"
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517f8",
+                                        "level": 2,
+                                        "orgname": "华为事业部",
+                                        "pid": "5ce247ad21c8a35d0f1cd147"
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517ff",
+                                        "level": 3,
+                                        "orgname": "西南区",
+                                        "pid": "5742a607779ec2cb740517f8"
+                                    },
+                                    {
+                                        "_id": "5ce24eda73e8ba570f435458",
+                                        "level": 4,
+                                        "orgname": "成都办事处",
+                                        "pid": "5742a607779ec2cb740517ff"
+                                    }
+                                ]
+                            },
+                            "department": {
+                                "id": "5ce24eda73e8ba570f435458",
+                                "id2": "5742a607779ec2cb740517f8",
+                                "name": "成都办事处",
+                                "name2": "华为事业部"
+                            },
+                            "lendbase": {
+                                "advance_delivery": "否",
+                                "days": 19,
+                                "des": "自动化1906239867",
+                                "end": "2019-04-29",
+                                "hascontract": "是",
+                                "lendtype": "ZA1",
+                                "productline": "数通项目",
+                                "productlineid": "F1",
+                                "project_title": "自动化1906239867",
+                                "renewdays": 0,
+                                "start": "2019-04-10",
+                                "sum": 3030.77,
+                                "transferway": "01"
+                            },
+                            "processinfo": {
+                                "inprocess": true
+                            },
+                            "products": [
+                                {
+                                    "_id": "5d0f28af42a6c1b24f9c4b41",
+                                    "changednum": null,
+                                    "code": "02131120-F990",
+                                    "des": "2200W交流电源模块",
+                                    "fhnum": 0,
+                                    "kynum": -1,
+                                    "money": 3030.77,
+                                    "notreturn": 0,
+                                    "outnum": 1,
+                                    "productcode": "02131120",
+                                    "productnumber": "PAC-2200WF",
+                                    "returned": 0,
+                                    "selled": 0,
+                                    "stock": 2,
+                                    "unitprice": 3030.77
+                                }
+                            ],
+                            "receivers": [
+                                {
+                                    "address": "青年邻居",
+                                    "city": "370300",
+                                    "name": "王思鲲",
+                                    "phone": "15177779999",
+                                    "province": "37",
+                                    "tel": "",
+                                    "zipcode": "665123"
+                                }
+                            ],
+                            "timestamp": "2019-06-23T07:22:23.335Z",
+                            "traderlogin": "shichen",
+                            "tradername": "石晨",
+                            "user": {
+                                "id": "5742a607779ec2cb740518ff",
+                                "name": "何晋"
+                            }
+                        }
+                    },
+                    "controller": "productlend",
+                    "curreceiver": [
+                        "侯文杰"
+                    ],
+                    "hasprint": false,
+                    "model": {
+                        "client": {
+                            "id": "1000006065",
+                            "name": "华为软件技术有限公司",
+                            "realname": "华为软件技术有限公司"
+                        },
+                        "code": "JCDA1906000795",
+                        "corp": "1000",
+                        "creator": {
+                            "_id": "5742a607779ec2cb740518ff",
+                            "login": "hejin",
+                            "name": "何晋",
+                            "orgid": "5ce24eda73e8ba570f435458",
+                            "orgname": "成都办事处",
+                            "parentorgList": [
+                                {
+                                    "_id": "5742a607779ec2cb740517f6",
+                                    "level": -1,
+                                    "orgname": "中建材信息技术股份有限公司",
+                                    "pid": null
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f7",
+                                    "level": 0,
+                                    "orgname": "信息产品事业群",
+                                    "pid": "5742a607779ec2cb740517f6"
+                                },
+                                {
+                                    "_id": "5ce247ad21c8a35d0f1cd147",
+                                    "level": 1,
+                                    "orgname": "业务中心",
+                                    "pid": "5742a607779ec2cb740517f7"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f8",
+                                    "level": 2,
+                                    "orgname": "华为事业部",
+                                    "pid": "5ce247ad21c8a35d0f1cd147"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517ff",
+                                    "level": 3,
+                                    "orgname": "西南区",
+                                    "pid": "5742a607779ec2cb740517f8"
+                                },
+                                {
+                                    "_id": "5ce24eda73e8ba570f435458",
+                                    "level": 4,
+                                    "orgname": "成都办事处",
+                                    "pid": "5742a607779ec2cb740517ff"
+                                }
+                            ]
+                        },
+                        "department": {
+                            "id": "5ce24eda73e8ba570f435458",
+                            "id2": "5742a607779ec2cb740517f8",
+                            "name": "成都办事处",
+                            "name2": "华为事业部"
+                        },
+                        "lendbase": {
+                            "advance_delivery": "否",
+                            "days": 19,
+                            "des": "自动化1906239867",
+                            "end": "2019-04-29",
+                            "hascontract": "是",
+                            "lendtype": "ZA1",
+                            "productline": "数通项目",
+                            "productlineid": "F1",
+                            "project_title": "自动化1906239867",
+                            "renewdays": 0,
+                            "start": "2019-04-10",
+                            "sum": 3030.77,
+                            "transferway": "01"
+                        },
+                        "processinfo": {
+                            "inprocess": true
+                        },
+                        "products": [
+                            {
+                                "_id": "5d0f28af42a6c1b24f9c4b41",
+                                "changednum": null,
+                                "code": "02131120-F990",
+                                "des": "2200W交流电源模块",
+                                "fhnum": 0,
+                                "kynum": -1,
+                                "money": 3030.77,
+                                "notreturn": 0,
+                                "outnum": 1,
+                                "productcode": "02131120",
+                                "productnumber": "PAC-2200WF",
+                                "returned": 0,
+                                "selled": 0,
+                                "stock": 2,
+                                "unitprice": 3030.77
+                            }
+                        ],
+                        "receivers": [
+                            {
+                                "address": "青年邻居",
+                                "city": "370300",
+                                "name": "王思鲲",
+                                "phone": "15177779999",
+                                "province": "37",
+                                "tel": "",
+                                "zipcode": "665123"
+                            }
+                        ],
+                        "timestamp": "2019-06-23T07:22:23.335Z",
+                        "traderlogin": "shichen",
+                        "tradername": "石晨",
+                        "user": {
+                            "id": "5742a607779ec2cb740518ff",
+                            "name": "何晋"
+                        }
+                    },
+                    "myflag": "mydoing",
+                    "node": {
+                        "_id": "5d0f28af42a6c1b24f9c4b4b",
+                        "createDate": "2019-06-23 15:22:23",
+                        "keepDate": "2天19小时57分"
+                    },
+                    "owner": {
+                        "_id": "5742a607779ec2cb740518ff",
+                        "login": "hejin",
+                        "name": "何晋",
+                        "orgid": "5ce24eda73e8ba570f435458",
+                        "orgname": "成都办事处"
+                    },
+                    "processId": "5d0f28aec299fdbe4fef83e5",
+                    "property": {
+                        "createDate": "2019-06-23 15:22:22",
+                        "finishDate": "2019-06-23 15:22:23",
+                        "printed": 0,
+                        "status": "审批中",
+                        "type": "JCD"
+                    },
+                    "title": "借出单-JCDA1906000795",
+                    "typename": "借出单"
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    },
+    "status": 1
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_get_detail_01: [第一岗] 查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')" >
+        成功</a>
+
+    <div id='div_pt1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.3: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODozNFoifQ.KqdcrG9ojtXG5lrp7-Hv_x4MsNPNs93fW22h1TiDpL0
+🔼 全局变量 审批岗位 的值为： houwenjie
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test02_get_mydoing_01
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： houwenjie
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d0f28af42a6c1b24f9c4b4b
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'data': {'total': 1, 'items': [{'typename': '借出单', 'myflag': 'mydoing', 'title': '借出单-JCDA1906000795', 'controller': 'productlend', 'content': {'model': {'code': 'JCDA1906000795', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'processinfo': {'inprocess': True}, 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', '_id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41', 'selled': 0, 'money': 3030.77, 'productnumber': 'PAC-2200WF', 'notreturn': 0, 'productcode': '02131120', 'stock': 2}], 'lendbase': {'des': '自动化1906239867', 'transferway': '01', 'end': '2019-04-29', 'lendtype': 'ZA1', 'productline': '数通项目', 'days': 19, 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'hascontract': '是', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'tradername': '石晨', 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'department': {'id': '5ce24eda73e8ba570f435458', 'name2': '华为事业部', 'name': '成都办事处', 'id2': '5742a607779ec2cb740517f8'}}}, 'hasprint': False, 'node': {'keepDate': '2天19小时57分', 'createDate': '2019-06-23 15:22:23', '_id': '5d0f28af42a6c1b24f9c4b4b'}, 'property': {'type': 'JCD', 'printed': 0, 'status': '审批中', 'createDate': '2019-06-23 15:22:22', 'finishDate': '2019-06-23 15:22:23'}, 'processId': '5d0f28aec299fdbe4fef83e5', 'model': {'code': 'JCDA1906000795', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'processinfo': {'inprocess': True}, 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', '_id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41', 'selled': 0, 'money': 3030.77, 'productnumber': 'PAC-2200WF', 'notreturn': 0, 'productcode': '02131120', 'stock': 2}], 'lendbase': {'des': '自动化1906239867', 'transferway': '01', 'end': '2019-04-29', 'lendtype': 'ZA1', 'productline': '数通项目', 'days': 19, 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'hascontract': '是', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'tradername': '石晨', 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'department': {'id': '5ce24eda73e8ba570f435458', 'name2': '华为事业部', 'name': '成都办事处', 'id2': '5742a607779ec2cb740517f8'}}, 'curreceiver': ['侯文杰'], 'owner': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}}], 'totalpage': 1}}, 'status': 1}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "candidates": [
+            {
+                "receivers": [
+                    {
+                        "_id": "5853a876f56ac94516a624f9",
+                        "login": "mengyu",
+                        "name": "孟育",
+                        "orgname": "华为事业部"
+                    }
+                ],
+                "type": "product_director"
+            }
+        ],
+        "doc": {
+            "model": {
+                "client": {
+                    "id": "1000006065",
+                    "name": "华为软件技术有限公司",
+                    "realname": "华为软件技术有限公司"
+                },
+                "code": "JCDA1906000795",
+                "corp": "1000",
+                "creator": {
+                    "_id": "5742a607779ec2cb740518ff",
+                    "login": "hejin",
+                    "name": "何晋",
+                    "orgid": "5ce24eda73e8ba570f435458",
+                    "orgname": "成都办事处",
+                    "parentorgList": [
+                        {
+                            "_id": "5742a607779ec2cb740517f6",
+                            "level": -1,
+                            "orgname": "中建材信息技术股份有限公司",
+                            "pid": null
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517f7",
+                            "level": 0,
+                            "orgname": "信息产品事业群",
+                            "pid": "5742a607779ec2cb740517f6"
+                        },
+                        {
+                            "_id": "5ce247ad21c8a35d0f1cd147",
+                            "level": 1,
+                            "orgname": "业务中心",
+                            "pid": "5742a607779ec2cb740517f7"
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517f8",
+                            "level": 2,
+                            "orgname": "华为事业部",
+                            "pid": "5ce247ad21c8a35d0f1cd147"
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517ff",
+                            "level": 3,
+                            "orgname": "西南区",
+                            "pid": "5742a607779ec2cb740517f8"
+                        },
+                        {
+                            "_id": "5ce24eda73e8ba570f435458",
+                            "level": 4,
+                            "orgname": "成都办事处",
+                            "pid": "5742a607779ec2cb740517ff"
+                        }
+                    ]
+                },
+                "department": {
+                    "id": "5ce24eda73e8ba570f435458",
+                    "id2": "5742a607779ec2cb740517f8",
+                    "name": "成都办事处",
+                    "name2": "华为事业部"
+                },
+                "lendbase": {
+                    "advance_delivery": "否",
+                    "days": 19,
+                    "des": "自动化1906239867",
+                    "end": "2019-04-29",
+                    "hascontract": "是",
+                    "lendtype": "ZA1",
+                    "productline": "数通项目",
+                    "productlineid": "F1",
+                    "project_title": "自动化1906239867",
+                    "renewdays": 0,
+                    "start": "2019-04-10",
+                    "sum": 3030.77,
+                    "transferway": "01"
+                },
+                "processinfo": {
+                    "inprocess": true
+                },
+                "products": [
+                    {
+                        "_id": "5d0f28af42a6c1b24f9c4b41",
+                        "changednum": null,
+                        "code": "02131120-F990",
+                        "des": "2200W交流电源模块",
+                        "fhnum": 0,
+                        "kynum": -1,
+                        "money": 3030.77,
+                        "notreturn": 0,
+                        "outnum": 1,
+                        "productcode": "02131120",
+                        "productnumber": "PAC-2200WF",
+                        "returned": 0,
+                        "selled": 0,
+                        "stock": 2,
+                        "unitprice": 3030.77
+                    }
+                ],
+                "receivers": [
+                    {
+                        "address": "青年邻居",
+                        "city": "370300",
+                        "name": "王思鲲",
+                        "phone": "15177779999",
+                        "province": "37",
+                        "tel": "",
+                        "zipcode": "665123"
+                    }
+                ],
+                "timestamp": "2019-06-23T07:22:23.335Z",
+                "traderlogin": "shichen",
+                "tradername": "石晨",
+                "user": {
+                    "id": "5742a607779ec2cb740518ff",
+                    "name": "何晋"
+                }
+            }
+        },
+        "findFutureCandidates": [
+            {
+                "receivers": [
+                    {
+                        "_id": "5853a876f56ac94516a624f9",
+                        "login": "mengyu",
+                        "name": "孟育",
+                        "orgname": "华为事业部"
+                    }
+                ],
+                "type": "product_director"
+            }
+        ],
+        "nodeId": "5d0f28af42a6c1b24f9c4b4b",
+        "nodeIndex": 1,
+        "nodeStatus": "active",
+        "nodeType": "supplychain",
+        "processId": "5d0f28aec299fdbe4fef83e5",
+        "processlog": [
+            {
+                "_id": "5d0f28af42a6c1b24f9c4b49",
+                "content": {
+                    "changes": [],
+                    "comment": "申请审批"
+                },
+                "createDate": "2019-06-23T07:22:23.456Z",
+                "finishDate": "2019-06-23T07:22:23.456Z",
+                "first": true,
+                "keepDate": "",
+                "nodeid": "5d0f28aec299fdbe4fef83e7",
+                "nodetype": "init",
+                "operation": "提交",
+                "sender": {
+                    "_id": "5742a607779ec2cb740518ff",
+                    "login": "hejin",
+                    "name": "何晋",
+                    "orgid": "5ce24eda73e8ba570f435458",
+                    "orgname": "成都办事处"
+                },
+                "status": ""
+            },
+            {
+                "content": {
+                    "changes": [],
+                    "comment": ""
+                },
+                "createDate": "2019-06-23T07:22:23.456Z",
+                "finishDate": null,
+                "first": true,
+                "keepDate": "2天19小时57分",
+                "nodeid": "5d0f28af42a6c1b24f9c4b4b",
+                "nodestatus": "active",
+                "nodetype": "supplychain",
+                "operation": "待处理",
+                "sender": {
+                    "_id": "5742a607779ec2cb74051aad",
+                    "login": "houwenjie",
+                    "name": "侯文杰",
+                    "orgname": "库存组"
+                }
+            },
+            {
+                "content": {
+                    "changes": [],
+                    "comment": ""
+                },
+                "createDate": "",
+                "first": true,
+                "lastNode": true,
+                "nodeid": "",
+                "nodestatus": "",
+                "nodetype": "product_director",
+                "operation": "待处理",
+                "sender": {
+                    "_id": "5853a876f56ac94516a624f9",
+                    "login": "mengyu",
+                    "name": "孟育",
+                    "orgname": "华为事业部"
+                }
+            }
+        ],
+        "processlogstatics": {
+            "createDate": "2019-06-23T07:22:23.456Z",
+            "finishDate": "2019-06-26T03:18:36.348Z",
+            "keepDate": "2天19小时57分",
+            "recall": 0,
+            "repel": 0,
+            "status": "审批中"
+        },
+        "property": {
+            "createDate": "2019-06-23T07:22:22.109Z",
+            "finishDate": "2019-06-23T07:22:23.490Z",
+            "printed": 0,
+            "status": "active",
+            "type": "JCD"
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_get_detail_02: [第一岗] 审批流为“销售合同”，且配套服务为“1”时，维护成本分析信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
+        成功</a>
+
+    <div id='div_pt1.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.4: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODozNFoifQ.KqdcrG9ojtXG5lrp7-Hv_x4MsNPNs93fW22h1TiDpL0
+🔼 全局变量 candidates 的值为： [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}]
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test03_get_detail_01
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： houwenjie
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d0f28af42a6c1b24f9c4b4b
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'candidates': [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}], 'processlogstatics': {'recall': 0, 'createDate': '2019-06-23T07:22:23.456Z', 'finishDate': '2019-06-26T03:18:36.348Z', 'keepDate': '2天19小时57分', 'status': '审批中', 'repel': 0}, 'processId': '5d0f28aec299fdbe4fef83e5', 'doc': {'model': {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'traderlogin': 'shichen', 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}}, 'findFutureCandidates': [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}], 'nodeId': '5d0f28af42a6c1b24f9c4b4b', 'nodeIndex': 1, 'nodeStatus': 'active', 'nodeType': 'supplychain', 'property': {'type': 'JCD', 'createDate': '2019-06-23T07:22:22.109Z', 'status': 'active', 'printed': 0, 'finishDate': '2019-06-23T07:22:23.490Z'}, 'processlog': [{'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}, 'first': True, 'operation': '提交', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d0f28af42a6c1b24f9c4b49', 'status': '', 'keepDate': '', 'nodetype': 'init', 'finishDate': '2019-06-23T07:22:23.456Z', 'content': {'comment': '申请审批', 'changes': []}, 'nodeid': '5d0f28aec299fdbe4fef83e7'}, {'first': True, 'keepDate': '2天19小时57分', 'createDate': '2019-06-23T07:22:23.456Z', 'sender': {'orgname': '库存组', '_id': '5742a607779ec2cb74051aad', 'login': 'houwenjie', 'name': '侯文杰'}, 'nodestatus': 'active', 'finishDate': None, 'operation': '待处理', 'nodetype': 'supplychain', 'content': {'comment': '', 'changes': []}, 'nodeid': '5d0f28af42a6c1b24f9c4b4b'}, {'lastNode': True, 'first': True, 'createDate': '', 'sender': {'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}, 'nodestatus': '', 'operation': '待处理', 'nodetype': 'product_director', 'content': {'comment': '', 'changes': []}, 'nodeid': ''}]}, 'msg': 'OK'}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /contract/savecost
+🎈案例 test03_get_detail_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_agree_01: [第一岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.5')" >
+        成功</a>
+
+    <div id='div_pt1.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.5: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODozNFoifQ.KqdcrG9ojtXG5lrp7-Hv_x4MsNPNs93fW22h1TiDpL0
+🔼 全局变量 candidates 的值为： [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}]
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test03_get_detail_02
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： houwenjie
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d0f28af42a6c1b24f9c4b4b
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'candidates': [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}], 'processlogstatics': {'recall': 0, 'createDate': '2019-06-23T07:22:23.456Z', 'finishDate': '2019-06-26T03:18:36.348Z', 'keepDate': '2天19小时57分', 'status': '审批中', 'repel': 0}, 'processId': '5d0f28aec299fdbe4fef83e5', 'doc': {'model': {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'traderlogin': 'shichen', 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}}, 'findFutureCandidates': [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}], 'nodeId': '5d0f28af42a6c1b24f9c4b4b', 'nodeIndex': 1, 'nodeStatus': 'active', 'nodeType': 'supplychain', 'property': {'type': 'JCD', 'createDate': '2019-06-23T07:22:22.109Z', 'status': 'active', 'printed': 0, 'finishDate': '2019-06-23T07:22:23.490Z'}, 'processlog': [{'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}, 'first': True, 'operation': '提交', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d0f28af42a6c1b24f9c4b49', 'status': '', 'keepDate': '', 'nodetype': 'init', 'finishDate': '2019-06-23T07:22:23.456Z', 'content': {'comment': '申请审批', 'changes': []}, 'nodeid': '5d0f28aec299fdbe4fef83e7'}, {'first': True, 'keepDate': '2天19小时57分', 'createDate': '2019-06-23T07:22:23.456Z', 'sender': {'orgname': '库存组', '_id': '5742a607779ec2cb74051aad', 'login': 'houwenjie', 'name': '侯文杰'}, 'nodestatus': 'active', 'finishDate': None, 'operation': '待处理', 'nodetype': 'supplychain', 'content': {'comment': '', 'changes': []}, 'nodeid': '5d0f28af42a6c1b24f9c4b4b'}, {'lastNode': True, 'first': True, 'createDate': '', 'sender': {'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}, 'nodestatus': '', 'operation': '待处理', 'nodetype': 'product_director', 'content': {'comment': '', 'changes': []}, 'nodeid': ''}]}, 'msg': 'OK'}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+📦 返回值 审批岗位 为: houwenjie,mengyu
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": []
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_get_list_01: [第一岗] 审批后用上一岗节点信息查询下一节点处理人（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.6')" >
+        成功</a>
+
+    <div id='div_pt1.6' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.6').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.6: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODozNFoifQ.KqdcrG9ojtXG5lrp7-Hv_x4MsNPNs93fW22h1TiDpL0
+🔼 全局变量 candidates 的值为： [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}]
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie,mengyu
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test04_agree_01
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： mengyu
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d0f28af42a6c1b24f9c4b4b
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': [], 'msg': 'OK'}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 单据号 的值为： JCDA1906000795
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+📦 返回值 审批状态 为: 审批中
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "approval_status": "2",
+        "data": {
+            "items": [
+                {
+                    "__v": 0,
+                    "_id": "5d0f28aec299fdbe4fef83e5",
+                    "controller": "productlend",
+                    "curreceiver": [
+                        "孟育"
+                    ],
+                    "doc": {
+                        "_id": "5d0f28aec299fdbe4fef83e6",
+                        "assist": {
+                            "deptowned": "5742a607779ec2cb740517f7",
+                            "groupowned": "5ce24eda73e8ba570f435458",
+                            "groupownedAbove4": "5742a607779ec2cb740517ff",
+                            "itgroup": "it",
+                            "orgowned": "5742a607779ec2cb740517f8",
+                            "orgs": [
+                                {
+                                    "_id": "5742a607779ec2cb740517f7",
+                                    "level": 0,
+                                    "orgname": "信息产品事业群",
+                                    "pid": "5742a607779ec2cb740517f6"
+                                },
+                                {
+                                    "_id": "5ce247ad21c8a35d0f1cd147",
+                                    "level": 1,
+                                    "orgname": "业务中心",
+                                    "pid": "5742a607779ec2cb740517f7"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f8",
+                                    "level": 2,
+                                    "orgname": "华为事业部",
+                                    "pid": "5ce247ad21c8a35d0f1cd147"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517ff",
+                                    "level": 3,
+                                    "orgname": "西南区",
+                                    "pid": "5742a607779ec2cb740517f8"
+                                },
+                                {
+                                    "_id": "5ce24eda73e8ba570f435458",
+                                    "level": 4,
+                                    "orgname": "成都办事处",
+                                    "pid": "5742a607779ec2cb740517ff"
+                                }
+                            ],
+                            "salegroup": "成都办事处",
+                            "userroles": [
+                                "authority_bmdb_all",
+                                "sale",
+                                "sale",
+                                "approval_costcenter_manager",
+                                "approval_gmanager"
+                            ]
+                        },
+                        "content": {
+                            "model": {
+                                "client": {
+                                    "id": "1000006065",
+                                    "name": "华为软件技术有限公司",
+                                    "realname": "华为软件技术有限公司"
+                                },
+                                "code": "JCDA1906000795",
+                                "corp": "1000",
+                                "creator": {
+                                    "_id": "5742a607779ec2cb740518ff",
+                                    "login": "hejin",
+                                    "name": "何晋",
+                                    "orgid": "5ce24eda73e8ba570f435458",
+                                    "orgname": "成都办事处",
+                                    "parentorgList": [
+                                        {
+                                            "_id": "5742a607779ec2cb740517f6",
+                                            "level": -1,
+                                            "orgname": "中建材信息技术股份有限公司",
+                                            "pid": null
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f7",
+                                            "level": 0,
+                                            "orgname": "信息产品事业群",
+                                            "pid": "5742a607779ec2cb740517f6"
+                                        },
+                                        {
+                                            "_id": "5ce247ad21c8a35d0f1cd147",
+                                            "level": 1,
+                                            "orgname": "业务中心",
+                                            "pid": "5742a607779ec2cb740517f7"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517f8",
+                                            "level": 2,
+                                            "orgname": "华为事业部",
+                                            "pid": "5ce247ad21c8a35d0f1cd147"
+                                        },
+                                        {
+                                            "_id": "5742a607779ec2cb740517ff",
+                                            "level": 3,
+                                            "orgname": "西南区",
+                                            "pid": "5742a607779ec2cb740517f8"
+                                        },
+                                        {
+                                            "_id": "5ce24eda73e8ba570f435458",
+                                            "level": 4,
+                                            "orgname": "成都办事处",
+                                            "pid": "5742a607779ec2cb740517ff"
+                                        }
+                                    ]
+                                },
+                                "department": {
+                                    "id": "5ce24eda73e8ba570f435458",
+                                    "id2": "5742a607779ec2cb740517f8",
+                                    "name": "成都办事处",
+                                    "name2": "华为事业部"
+                                },
+                                "lendbase": {
+                                    "advance_delivery": "否",
+                                    "days": 19,
+                                    "des": "自动化1906239867",
+                                    "end": "2019-04-29",
+                                    "hascontract": "是",
+                                    "lendtype": "ZA1",
+                                    "productline": "数通项目",
+                                    "productlineid": "F1",
+                                    "project_title": "自动化1906239867",
+                                    "renewdays": 0,
+                                    "start": "2019-04-10",
+                                    "sum": 3030.77,
+                                    "transferway": "01"
+                                },
+                                "processinfo": {
+                                    "inprocess": true
+                                },
+                                "products": [
+                                    {
+                                        "_id": "5d0f28af42a6c1b24f9c4b41",
+                                        "changednum": null,
+                                        "code": "02131120-F990",
+                                        "des": "2200W交流电源模块",
+                                        "fhnum": 0,
+                                        "kynum": -1,
+                                        "money": 3030.77,
+                                        "notreturn": 0,
+                                        "outnum": 1,
+                                        "productcode": "02131120",
+                                        "productnumber": "PAC-2200WF",
+                                        "returned": 0,
+                                        "selled": 0,
+                                        "stock": 2,
+                                        "unitprice": 3030.77
+                                    }
+                                ],
+                                "receivers": [
+                                    {
+                                        "address": "青年邻居",
+                                        "city": "370300",
+                                        "name": "王思鲲",
+                                        "phone": "15177779999",
+                                        "province": "37",
+                                        "tel": "",
+                                        "zipcode": "665123"
+                                    }
+                                ],
+                                "timestamp": "2019-06-23T07:22:23.335Z",
+                                "traderlogin": "shichen",
+                                "tradername": "石晨",
+                                "user": {
+                                    "id": "5742a607779ec2cb740518ff",
+                                    "name": "何晋"
+                                }
+                            },
+                            "products": [
+                                {
+                                    "_id": "5d0f28af42a6c1b24f9c4b41",
+                                    "changednum": null,
+                                    "code": "02131120-F990",
+                                    "des": "2200W交流电源模块",
+                                    "fhnum": 0,
+                                    "kynum": -1,
+                                    "money": 3030.77,
+                                    "notreturn": 0,
+                                    "outnum": 1,
+                                    "productcode": "02131120",
+                                    "productnumber": "PAC-2200WF",
+                                    "returned": 0,
+                                    "selled": 0,
+                                    "stock": 2,
+                                    "unitprice": 3030.77
+                                }
+                            ],
+                            "receivers": [
+                                {
+                                    "address": "青年邻居",
+                                    "city": "370300",
+                                    "name": "王思鲲",
+                                    "phone": "15177779999",
+                                    "province": "37",
+                                    "tel": "",
+                                    "zipcode": "665123"
+                                }
+                            ]
+                        }
+                    },
+                    "nodeId": "5d12e40fcc32106ba68caa2d",
+                    "nodes": [
+                        {
+                            "_id": "5d0f28aec299fdbe4fef83e7",
+                            "children": [
+                                "5d0f28af42a6c1b24f9c4b4b"
+                            ],
+                            "comment": "申请审批",
+                            "comments": [
+                                {
+                                    "_id": "5d0f28af42a6c1b24f9c4b4a",
+                                    "content": "申请审批",
+                                    "createDate": "2019-06-23T07:22:23.486Z"
+                                }
+                            ],
+                            "parents": [],
+                            "property": {
+                                "createDate": "2019-06-23T07:22:22.109Z",
+                                "finishDate": "2019-06-23T07:22:23.487Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "init"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d0f28af42a6c1b24f9c4b4b",
+                            "children": [
+                                "5d12e40fcc32106ba68caa2d"
+                            ],
+                            "comment": "",
+                            "comments": [],
+                            "parents": [
+                                "5d0f28aec299fdbe4fef83e7"
+                            ],
+                            "property": {
+                                "createDate": "2019-06-23T07:22:23.488Z",
+                                "finishDate": "2019-06-26T03:18:39.779Z",
+                                "printed": 0,
+                                "status": "approve",
+                                "type": "supplychain"
+                            },
+                            "receiver": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgname": "库存组"
+                            },
+                            "sender": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            }
+                        },
+                        {
+                            "_id": "5d12e40fcc32106ba68caa2d",
+                            "children": [],
+                            "comments": [],
+                            "parents": [
+                                "5d0f28af42a6c1b24f9c4b4b"
+                            ],
+                            "property": {
+                                "createDate": "2019-06-26T03:18:39.780Z",
+                                "printed": 0,
+                                "status": "active",
+                                "type": "product_director"
+                            },
+                            "receiver": {
+                                "_id": "5853a876f56ac94516a624f9",
+                                "login": "mengyu",
+                                "name": "孟育",
+                                "orgname": "华为事业部"
+                            },
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgname": "库存组"
+                            }
+                        }
+                    ],
+                    "owner": {
+                        "_id": "5742a607779ec2cb740518ff",
+                        "login": "hejin",
+                        "name": "何晋",
+                        "orgid": "5ce24eda73e8ba570f435458",
+                        "orgname": "成都办事处"
+                    },
+                    "processId": "5d0f28aec299fdbe4fef83e5",
+                    "processlog": [
+                        {
+                            "_id": "5d0f28af42a6c1b24f9c4b49",
+                            "content": {
+                                "changes": [],
+                                "comment": "申请审批"
+                            },
+                            "createDate": "2019-06-23T07:22:23.456Z",
+                            "finishDate": "2019-06-23T07:22:23.456Z",
+                            "keepDate": "",
+                            "nodeid": "5d0f28aec299fdbe4fef83e7",
+                            "nodetype": "init",
+                            "operation": "提交",
+                            "sender": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处"
+                            },
+                            "status": ""
+                        },
+                        {
+                            "_id": "5d12e40fcc32106ba68caa2c",
+                            "content": {
+                                "changes": []
+                            },
+                            "createDate": "2019-06-23T07:22:23.456Z",
+                            "finishDate": "2019-06-26T03:18:39.753Z",
+                            "keepDate": "2天19小时57分",
+                            "nodeid": "5d0f28af42a6c1b24f9c4b4b",
+                            "nodetype": "supplychain",
+                            "operation": "通过",
+                            "sender": {
+                                "_id": "5742a607779ec2cb74051aad",
+                                "login": "houwenjie",
+                                "name": "侯文杰",
+                                "orgid": "5ce24cba73e8ba570f435438",
+                                "orgname": "库存组"
+                            },
+                            "status": ""
+                        }
+                    ],
+                    "property": {
+                        "createDate": "2019-06-23T07:22:22.109Z",
+                        "finishDate": "2019-06-26T03:18:39.784Z",
+                        "printed": 0,
+                        "status": "active",
+                        "type": "JCD"
+                    },
+                    "subscribers": []
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_get_mydoing_02: [第二岗] 第二岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.7')" >
+        成功</a>
+
+    <div id='div_pt1.7' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.7').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.7: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODozNFoifQ.KqdcrG9ojtXG5lrp7-Hv_x4MsNPNs93fW22h1TiDpL0
+🔼 全局变量 candidates 的值为： [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}]
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie,mengyu
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test05_get_list_01
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： mengyu
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d0f28af42a6c1b24f9c4b4b
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'data': {'total': 1, 'items': [{'doc': {'assist': {'orgowned': '5742a607779ec2cb740517f8', 'salegroup': '成都办事处', 'orgs': [{'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'itgroup': 'it', 'userroles': ['authority_bmdb_all', 'sale', 'sale', 'approval_costcenter_manager', 'approval_gmanager'], 'deptowned': '5742a607779ec2cb740517f7', 'groupownedAbove4': '5742a607779ec2cb740517ff', 'groupowned': '5ce24eda73e8ba570f435458'}, 'content': {'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'model': {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'traderlogin': 'shichen', 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}}, '_id': '5d0f28aec299fdbe4fef83e6'}, 'controller': 'productlend', 'subscribers': [], '__v': 0, 'processId': '5d0f28aec299fdbe4fef83e5', 'property': {'type': 'JCD', 'createDate': '2019-06-23T07:22:22.109Z', 'finishDate': '2019-06-26T03:18:39.784Z', 'printed': 0, 'status': 'active'}, '_id': '5d0f28aec299fdbe4fef83e5', 'nodeId': '5d12e40fcc32106ba68caa2d', 'processlog': [{'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}, 'keepDate': '', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d0f28af42a6c1b24f9c4b49', 'status': '', 'operation': '提交', 'nodetype': 'init', 'finishDate': '2019-06-23T07:22:23.456Z', 'content': {'comment': '申请审批', 'changes': []}, 'nodeid': '5d0f28aec299fdbe4fef83e7'}, {'sender': {'orgname': '库存组', 'orgid': '5ce24cba73e8ba570f435438', 'login': 'houwenjie', 'name': '侯文杰', '_id': '5742a607779ec2cb74051aad'}, 'operation': '通过', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d12e40fcc32106ba68caa2c', 'status': '', 'keepDate': '2天19小时57分', 'nodetype': 'supplychain', 'finishDate': '2019-06-26T03:18:39.753Z', 'content': {'changes': []}, 'nodeid': '5d0f28af42a6c1b24f9c4b4b'}], 'curreceiver': ['孟育'], 'owner': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}, 'nodes': [{'comments': [{'createDate': '2019-06-23T07:22:23.486Z', 'content': '申请审批', '_id': '5d0f28af42a6c1b24f9c4b4a'}], 'children': ['5d0f28af42a6c1b24f9c4b4b'], '_id': '5d0f28aec299fdbe4fef83e7', 'comment': '申请审批', 'property': {'type': 'init', 'createDate': '2019-06-23T07:22:22.109Z', 'finishDate': '2019-06-23T07:22:23.487Z', 'printed': 0, 'status': 'approve'}, 'parents': [], 'receiver': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}}, {'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}, 'comments': [], 'children': ['5d12e40fcc32106ba68caa2d'], '_id': '5d0f28af42a6c1b24f9c4b4b', 'comment': '', 'property': {'type': 'supplychain', 'createDate': '2019-06-23T07:22:23.488Z', 'finishDate': '2019-06-26T03:18:39.779Z', 'printed': 0, 'status': 'approve'}, 'parents': ['5d0f28aec299fdbe4fef83e7'], 'receiver': {'orgname': '库存组', '_id': '5742a607779ec2cb74051aad', 'login': 'houwenjie', 'name': '侯文杰'}}, {'sender': {'orgname': '库存组', 'login': 'houwenjie', 'name': '侯文杰', '_id': '5742a607779ec2cb74051aad'}, 'comments': [], 'children': [], '_id': '5d12e40fcc32106ba68caa2d', 'property': {'type': 'product_director', 'createDate': '2019-06-26T03:18:39.780Z', 'printed': 0, 'status': 'active'}, 'parents': ['5d0f28af42a6c1b24f9c4b4b'], 'receiver': {'orgname': '华为事业部', 'login': 'mengyu', 'name': '孟育', '_id': '5853a876f56ac94516a624f9'}}]}], 'totalpage': 1}, 'approval_status': '2'}, 'msg': 'OK'}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 单据号 的值为： JCDA1906000795
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "rst": {
+        "data": {
+            "items": [
+                {
+                    "content": {
+                        "model": {
+                            "client": {
+                                "id": "1000006065",
+                                "name": "华为软件技术有限公司",
+                                "realname": "华为软件技术有限公司"
+                            },
+                            "code": "JCDA1906000795",
+                            "corp": "1000",
+                            "creator": {
+                                "_id": "5742a607779ec2cb740518ff",
+                                "login": "hejin",
+                                "name": "何晋",
+                                "orgid": "5ce24eda73e8ba570f435458",
+                                "orgname": "成都办事处",
+                                "parentorgList": [
+                                    {
+                                        "_id": "5742a607779ec2cb740517f6",
+                                        "level": -1,
+                                        "orgname": "中建材信息技术股份有限公司",
+                                        "pid": null
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517f7",
+                                        "level": 0,
+                                        "orgname": "信息产品事业群",
+                                        "pid": "5742a607779ec2cb740517f6"
+                                    },
+                                    {
+                                        "_id": "5ce247ad21c8a35d0f1cd147",
+                                        "level": 1,
+                                        "orgname": "业务中心",
+                                        "pid": "5742a607779ec2cb740517f7"
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517f8",
+                                        "level": 2,
+                                        "orgname": "华为事业部",
+                                        "pid": "5ce247ad21c8a35d0f1cd147"
+                                    },
+                                    {
+                                        "_id": "5742a607779ec2cb740517ff",
+                                        "level": 3,
+                                        "orgname": "西南区",
+                                        "pid": "5742a607779ec2cb740517f8"
+                                    },
+                                    {
+                                        "_id": "5ce24eda73e8ba570f435458",
+                                        "level": 4,
+                                        "orgname": "成都办事处",
+                                        "pid": "5742a607779ec2cb740517ff"
+                                    }
+                                ]
+                            },
+                            "department": {
+                                "id": "5ce24eda73e8ba570f435458",
+                                "id2": "5742a607779ec2cb740517f8",
+                                "name": "成都办事处",
+                                "name2": "华为事业部"
+                            },
+                            "lendbase": {
+                                "advance_delivery": "否",
+                                "days": 19,
+                                "des": "自动化1906239867",
+                                "end": "2019-04-29",
+                                "hascontract": "是",
+                                "lendtype": "ZA1",
+                                "productline": "数通项目",
+                                "productlineid": "F1",
+                                "project_title": "自动化1906239867",
+                                "renewdays": 0,
+                                "start": "2019-04-10",
+                                "sum": 3030.77,
+                                "transferway": "01"
+                            },
+                            "processinfo": {
+                                "inprocess": true
+                            },
+                            "products": [
+                                {
+                                    "_id": "5d0f28af42a6c1b24f9c4b41",
+                                    "changednum": null,
+                                    "code": "02131120-F990",
+                                    "des": "2200W交流电源模块",
+                                    "fhnum": 0,
+                                    "kynum": -1,
+                                    "money": 3030.77,
+                                    "notreturn": 0,
+                                    "outnum": 1,
+                                    "productcode": "02131120",
+                                    "productnumber": "PAC-2200WF",
+                                    "returned": 0,
+                                    "selled": 0,
+                                    "stock": 2,
+                                    "unitprice": 3030.77
+                                }
+                            ],
+                            "receivers": [
+                                {
+                                    "address": "青年邻居",
+                                    "city": "370300",
+                                    "name": "王思鲲",
+                                    "phone": "15177779999",
+                                    "province": "37",
+                                    "tel": "",
+                                    "zipcode": "665123"
+                                }
+                            ],
+                            "timestamp": "2019-06-23T07:22:23.335Z",
+                            "traderlogin": "shichen",
+                            "tradername": "石晨",
+                            "user": {
+                                "id": "5742a607779ec2cb740518ff",
+                                "name": "何晋"
+                            }
+                        },
+                        "products": [
+                            {
+                                "_id": "5d0f28af42a6c1b24f9c4b41",
+                                "changednum": null,
+                                "code": "02131120-F990",
+                                "des": "2200W交流电源模块",
+                                "fhnum": 0,
+                                "kynum": -1,
+                                "money": 3030.77,
+                                "notreturn": 0,
+                                "outnum": 1,
+                                "productcode": "02131120",
+                                "productnumber": "PAC-2200WF",
+                                "returned": 0,
+                                "selled": 0,
+                                "stock": 2,
+                                "unitprice": 3030.77
+                            }
+                        ],
+                        "receivers": [
+                            {
+                                "address": "青年邻居",
+                                "city": "370300",
+                                "name": "王思鲲",
+                                "phone": "15177779999",
+                                "province": "37",
+                                "tel": "",
+                                "zipcode": "665123"
+                            }
+                        ]
+                    },
+                    "controller": "productlend",
+                    "curreceiver": [
+                        "孟育"
+                    ],
+                    "hasprint": false,
+                    "model": {
+                        "client": {
+                            "id": "1000006065",
+                            "name": "华为软件技术有限公司",
+                            "realname": "华为软件技术有限公司"
+                        },
+                        "code": "JCDA1906000795",
+                        "corp": "1000",
+                        "creator": {
+                            "_id": "5742a607779ec2cb740518ff",
+                            "login": "hejin",
+                            "name": "何晋",
+                            "orgid": "5ce24eda73e8ba570f435458",
+                            "orgname": "成都办事处",
+                            "parentorgList": [
+                                {
+                                    "_id": "5742a607779ec2cb740517f6",
+                                    "level": -1,
+                                    "orgname": "中建材信息技术股份有限公司",
+                                    "pid": null
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f7",
+                                    "level": 0,
+                                    "orgname": "信息产品事业群",
+                                    "pid": "5742a607779ec2cb740517f6"
+                                },
+                                {
+                                    "_id": "5ce247ad21c8a35d0f1cd147",
+                                    "level": 1,
+                                    "orgname": "业务中心",
+                                    "pid": "5742a607779ec2cb740517f7"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517f8",
+                                    "level": 2,
+                                    "orgname": "华为事业部",
+                                    "pid": "5ce247ad21c8a35d0f1cd147"
+                                },
+                                {
+                                    "_id": "5742a607779ec2cb740517ff",
+                                    "level": 3,
+                                    "orgname": "西南区",
+                                    "pid": "5742a607779ec2cb740517f8"
+                                },
+                                {
+                                    "_id": "5ce24eda73e8ba570f435458",
+                                    "level": 4,
+                                    "orgname": "成都办事处",
+                                    "pid": "5742a607779ec2cb740517ff"
+                                }
+                            ]
+                        },
+                        "department": {
+                            "id": "5ce24eda73e8ba570f435458",
+                            "id2": "5742a607779ec2cb740517f8",
+                            "name": "成都办事处",
+                            "name2": "华为事业部"
+                        },
+                        "lendbase": {
+                            "advance_delivery": "否",
+                            "days": 19,
+                            "des": "自动化1906239867",
+                            "end": "2019-04-29",
+                            "hascontract": "是",
+                            "lendtype": "ZA1",
+                            "productline": "数通项目",
+                            "productlineid": "F1",
+                            "project_title": "自动化1906239867",
+                            "renewdays": 0,
+                            "start": "2019-04-10",
+                            "sum": 3030.77,
+                            "transferway": "01"
+                        },
+                        "processinfo": {
+                            "inprocess": true
+                        },
+                        "products": [
+                            {
+                                "_id": "5d0f28af42a6c1b24f9c4b41",
+                                "changednum": null,
+                                "code": "02131120-F990",
+                                "des": "2200W交流电源模块",
+                                "fhnum": 0,
+                                "kynum": -1,
+                                "money": 3030.77,
+                                "notreturn": 0,
+                                "outnum": 1,
+                                "productcode": "02131120",
+                                "productnumber": "PAC-2200WF",
+                                "returned": 0,
+                                "selled": 0,
+                                "stock": 2,
+                                "unitprice": 3030.77
+                            }
+                        ],
+                        "receivers": [
+                            {
+                                "address": "青年邻居",
+                                "city": "370300",
+                                "name": "王思鲲",
+                                "phone": "15177779999",
+                                "province": "37",
+                                "tel": "",
+                                "zipcode": "665123"
+                            }
+                        ],
+                        "timestamp": "2019-06-23T07:22:23.335Z",
+                        "traderlogin": "shichen",
+                        "tradername": "石晨",
+                        "user": {
+                            "id": "5742a607779ec2cb740518ff",
+                            "name": "何晋"
+                        }
+                    },
+                    "myflag": "mydoing",
+                    "node": {
+                        "_id": "5d12e40fcc32106ba68caa2d",
+                        "createDate": "2019-06-26 11:18:39",
+                        "keepDate": "1分"
+                    },
+                    "owner": {
+                        "_id": "5742a607779ec2cb740518ff",
+                        "login": "hejin",
+                        "name": "何晋",
+                        "orgid": "5ce24eda73e8ba570f435458",
+                        "orgname": "成都办事处"
+                    },
+                    "processId": "5d0f28aec299fdbe4fef83e5",
+                    "property": {
+                        "createDate": "2019-06-23 15:22:22",
+                        "finishDate": "2019-06-26 11:18:39",
+                        "printed": 0,
+                        "status": "审批中",
+                        "type": "JCD"
+                    },
+                    "title": "借出单-JCDA1906000795",
+                    "typename": "借出单"
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    },
+    "status": 1
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_get_detail_02: [第二岗] 第二岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.8')" >
+        成功</a>
+
+    <div id='div_pt1.8' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.8').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.8: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODo0NFoifQ._10Ss3f1q038APzEgd9v1_nPlIDdFNR9Ygz46Lzoljo
+🔼 全局变量 candidates 的值为： [{'type': 'product_director', 'receivers': [{'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}]}]
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie,mengyu
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test06_get_mydoing_02
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： mengyu
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d12e40fcc32106ba68caa2d
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'data': {'total': 1, 'items': [{'typename': '借出单', 'myflag': 'mydoing', 'title': '借出单-JCDA1906000795', 'controller': 'productlend', 'content': {'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', '_id': '5d0f28af42a6c1b24f9c4b41', 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, 'stock': 2}], 'model': {'code': 'JCDA1906000795', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'processinfo': {'inprocess': True}, 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', '_id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41', 'selled': 0, 'money': 3030.77, 'productnumber': 'PAC-2200WF', 'notreturn': 0, 'productcode': '02131120', 'stock': 2}], 'lendbase': {'des': '自动化1906239867', 'transferway': '01', 'end': '2019-04-29', 'lendtype': 'ZA1', 'productline': '数通项目', 'days': 19, 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'hascontract': '是', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'tradername': '石晨', 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'department': {'id': '5ce24eda73e8ba570f435458', 'name2': '华为事业部', 'name': '成都办事处', 'id2': '5742a607779ec2cb740517f8'}}}, 'hasprint': False, 'node': {'keepDate': '1分', 'createDate': '2019-06-26 11:18:39', '_id': '5d12e40fcc32106ba68caa2d'}, 'property': {'type': 'JCD', 'printed': 0, 'status': '审批中', 'createDate': '2019-06-23 15:22:22', 'finishDate': '2019-06-26 11:18:39'}, 'processId': '5d0f28aec299fdbe4fef83e5', 'model': {'code': 'JCDA1906000795', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'processinfo': {'inprocess': True}, 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', '_id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41', 'selled': 0, 'money': 3030.77, 'productnumber': 'PAC-2200WF', 'notreturn': 0, 'productcode': '02131120', 'stock': 2}], 'lendbase': {'des': '自动化1906239867', 'transferway': '01', 'end': '2019-04-29', 'lendtype': 'ZA1', 'productline': '数通项目', 'days': 19, 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'hascontract': '是', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'tradername': '石晨', 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'department': {'id': '5ce24eda73e8ba570f435458', 'name2': '华为事业部', 'name': '成都办事处', 'id2': '5742a607779ec2cb740517f8'}}, 'curreceiver': ['孟育'], 'owner': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin', 'name': '何晋', '_id': '5742a607779ec2cb740518ff'}}], 'totalpage': 1}}, 'status': 1}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "candidates": [],
+        "doc": {
+            "model": {
+                "client": {
+                    "id": "1000006065",
+                    "name": "华为软件技术有限公司",
+                    "realname": "华为软件技术有限公司"
+                },
+                "code": "JCDA1906000795",
+                "corp": "1000",
+                "creator": {
+                    "_id": "5742a607779ec2cb740518ff",
+                    "login": "hejin",
+                    "name": "何晋",
+                    "orgid": "5ce24eda73e8ba570f435458",
+                    "orgname": "成都办事处",
+                    "parentorgList": [
+                        {
+                            "_id": "5742a607779ec2cb740517f6",
+                            "level": -1,
+                            "orgname": "中建材信息技术股份有限公司",
+                            "pid": null
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517f7",
+                            "level": 0,
+                            "orgname": "信息产品事业群",
+                            "pid": "5742a607779ec2cb740517f6"
+                        },
+                        {
+                            "_id": "5ce247ad21c8a35d0f1cd147",
+                            "level": 1,
+                            "orgname": "业务中心",
+                            "pid": "5742a607779ec2cb740517f7"
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517f8",
+                            "level": 2,
+                            "orgname": "华为事业部",
+                            "pid": "5ce247ad21c8a35d0f1cd147"
+                        },
+                        {
+                            "_id": "5742a607779ec2cb740517ff",
+                            "level": 3,
+                            "orgname": "西南区",
+                            "pid": "5742a607779ec2cb740517f8"
+                        },
+                        {
+                            "_id": "5ce24eda73e8ba570f435458",
+                            "level": 4,
+                            "orgname": "成都办事处",
+                            "pid": "5742a607779ec2cb740517ff"
+                        }
+                    ]
+                },
+                "department": {
+                    "id": "5ce24eda73e8ba570f435458",
+                    "id2": "5742a607779ec2cb740517f8",
+                    "name": "成都办事处",
+                    "name2": "华为事业部"
+                },
+                "lendbase": {
+                    "advance_delivery": "否",
+                    "days": 19,
+                    "des": "自动化1906239867",
+                    "end": "2019-04-29",
+                    "hascontract": "是",
+                    "lendtype": "ZA1",
+                    "productline": "数通项目",
+                    "productlineid": "F1",
+                    "project_title": "自动化1906239867",
+                    "renewdays": 0,
+                    "start": "2019-04-10",
+                    "sum": 3030.77,
+                    "transferway": "01"
+                },
+                "processinfo": {
+                    "inprocess": true
+                },
+                "products": [
+                    {
+                        "_id": "5d0f28af42a6c1b24f9c4b41",
+                        "changednum": null,
+                        "code": "02131120-F990",
+                        "des": "2200W交流电源模块",
+                        "fhnum": 0,
+                        "kynum": -1,
+                        "money": 3030.77,
+                        "notreturn": 0,
+                        "outnum": 1,
+                        "productcode": "02131120",
+                        "productnumber": "PAC-2200WF",
+                        "returned": 0,
+                        "selled": 0,
+                        "stock": 2,
+                        "unitprice": 3030.77
+                    }
+                ],
+                "receivers": [
+                    {
+                        "address": "青年邻居",
+                        "city": "370300",
+                        "name": "王思鲲",
+                        "phone": "15177779999",
+                        "province": "37",
+                        "tel": "",
+                        "zipcode": "665123"
+                    }
+                ],
+                "timestamp": "2019-06-23T07:22:23.335Z",
+                "traderlogin": "shichen",
+                "tradername": "石晨",
+                "user": {
+                    "id": "5742a607779ec2cb740518ff",
+                    "name": "何晋"
+                }
+            },
+            "products": [
+                {
+                    "_id": "5d0f28af42a6c1b24f9c4b41",
+                    "changednum": null,
+                    "code": "02131120-F990",
+                    "des": "2200W交流电源模块",
+                    "fhnum": 0,
+                    "kynum": -1,
+                    "money": 3030.77,
+                    "notreturn": 0,
+                    "outnum": 1,
+                    "productcode": "02131120",
+                    "productnumber": "PAC-2200WF",
+                    "returned": 0,
+                    "selled": 0,
+                    "stock": 2,
+                    "unitprice": 3030.77
+                }
+            ],
+            "receivers": [
+                {
+                    "address": "青年邻居",
+                    "city": "370300",
+                    "name": "王思鲲",
+                    "phone": "15177779999",
+                    "province": "37",
+                    "tel": "",
+                    "zipcode": "665123"
+                }
+            ]
+        },
+        "findFutureCandidates": [],
+        "nodeId": "5d12e40fcc32106ba68caa2d",
+        "nodeIndex": 2,
+        "nodeStatus": "active",
+        "nodeType": "product_director",
+        "processId": "5d0f28aec299fdbe4fef83e5",
+        "processlog": [
+            {
+                "_id": "5d0f28af42a6c1b24f9c4b49",
+                "content": {
+                    "changes": [],
+                    "comment": "申请审批"
+                },
+                "createDate": "2019-06-23T07:22:23.456Z",
+                "finishDate": "2019-06-23T07:22:23.456Z",
+                "first": true,
+                "keepDate": "",
+                "nodeid": "5d0f28aec299fdbe4fef83e7",
+                "nodetype": "init",
+                "operation": "提交",
+                "sender": {
+                    "_id": "5742a607779ec2cb740518ff",
+                    "login": "hejin",
+                    "name": "何晋",
+                    "orgid": "5ce24eda73e8ba570f435458",
+                    "orgname": "成都办事处"
+                },
+                "status": ""
+            },
+            {
+                "_id": "5d12e40fcc32106ba68caa2c",
+                "content": {
+                    "changes": []
+                },
+                "createDate": "2019-06-23T07:22:23.456Z",
+                "finishDate": "2019-06-26T03:18:39.753Z",
+                "first": true,
+                "keepDate": "2天19小时57分",
+                "nodeid": "5d0f28af42a6c1b24f9c4b4b",
+                "nodetype": "supplychain",
+                "operation": "通过",
+                "sender": {
+                    "_id": "5742a607779ec2cb74051aad",
+                    "login": "houwenjie",
+                    "name": "侯文杰",
+                    "orgid": "5ce24cba73e8ba570f435438",
+                    "orgname": "库存组"
+                },
+                "status": ""
+            },
+            {
+                "content": {
+                    "changes": [],
+                    "comment": ""
+                },
+                "createDate": "2019-06-26T03:18:39.753Z",
+                "finishDate": null,
+                "first": true,
+                "keepDate": "1分",
+                "lastNode": true,
+                "nodeid": "5d12e40fcc32106ba68caa2d",
+                "nodestatus": "active",
+                "nodetype": "product_director",
+                "operation": "待处理",
+                "sender": {
+                    "_id": "5853a876f56ac94516a624f9",
+                    "login": "mengyu",
+                    "name": "孟育",
+                    "orgname": "华为事业部"
+                }
+            }
+        ],
+        "processlogstatics": {
+            "createDate": "2019-06-23T07:22:23.456Z",
+            "finishDate": "2019-06-26T03:18:47.273Z",
+            "keepDate": "2天19小时57分",
+            "recall": 0,
+            "repel": 0,
+            "status": "审批中"
+        },
+        "property": {
+            "createDate": "2019-06-23T07:22:22.109Z",
+            "finishDate": "2019-06-26T03:18:39.784Z",
+            "printed": 0,
+            "status": "active",
+            "type": "JCD"
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.9' class='none'>
+    <td class='failCase'><div class='testcase'>test08_agree_02: [第二岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.9')" >
+        失败</a>
+
+    <div id='div_ft1.9' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.9').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.9: 📌该案例正常执行！
+🔼 全局变量 TOKEN 的值为： eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHBpcnlEYXRlIjoiMjAxOS0wNy0wMlQxOToxODo0NFoifQ._10Ss3f1q038APzEgd9v1_nPlIDdFNR9Ygz46Lzoljo
+🔼 全局变量 candidates 的值为： []
+🔼 全局变量 doc 的值为： {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'traderlogin': 'shichen', 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}
+🔼 全局变量 审批岗位 的值为： houwenjie,mengyu
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 CASENAME 的值为： test07_get_detail_02
+🔼 全局变量 processId 的值为： 5d0f28aec299fdbe4fef83e5
+🔼 全局变量 当前节点处理人 的值为： mengyu
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 nodeId 的值为： 5d12e40fcc32106ba68caa2d
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 全局变量 RESULT 的值为： {'code': 200, 'rst': {'candidates': [], 'processlogstatics': {'recall': 0, 'createDate': '2019-06-23T07:22:23.456Z', 'finishDate': '2019-06-26T03:18:47.273Z', 'keepDate': '2天19小时57分', 'status': '审批中', 'repel': 0}, 'processId': '5d0f28aec299fdbe4fef83e5', 'doc': {'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'model': {'code': 'JCDA1906000795', 'department': {'id2': '5742a607779ec2cb740517f8', 'name2': '华为事业部', 'name': '成都办事处', 'id': '5ce24eda73e8ba570f435458'}, 'user': {'name': '何晋', 'id': '5742a607779ec2cb740518ff'}, 'products': [{'code': '02131120-F990', 'des': '2200W交流电源模块', 'fhnum': 0, 'outnum': 1, 'unitprice': 3030.77, 'kynum': -1, 'returned': 0, 'productnumber': 'PAC-2200WF', 'stock': 2, 'selled': 0, 'money': 3030.77, 'productcode': '02131120', 'notreturn': 0, 'changednum': None, '_id': '5d0f28af42a6c1b24f9c4b41'}], 'traderlogin': 'shichen', 'processinfo': {'inprocess': True}, 'tradername': '石晨', 'receivers': [{'zipcode': '665123', 'province': '37', 'phone': '15177779999', 'address': '青年邻居', 'city': '370300', 'name': '王思鲲', 'tel': ''}], 'lendbase': {'des': '自动化1906239867', 'days': 19, 'end': '2019-04-29', 'hascontract': '是', 'productline': '数通项目', 'transferway': '01', 'renewdays': 0, 'advance_delivery': '否', 'sum': 3030.77, 'lendtype': 'ZA1', 'productlineid': 'F1', 'start': '2019-04-10', 'project_title': '自动化1906239867'}, 'timestamp': '2019-06-23T07:22:23.335Z', 'creator': {'parentorgList': [{'pid': None, 'orgname': '中建材信息技术股份有限公司', 'level': -1, '_id': '5742a607779ec2cb740517f6'}, {'pid': '5742a607779ec2cb740517f6', 'orgname': '信息产品事业群', 'level': 0, '_id': '5742a607779ec2cb740517f7'}, {'pid': '5742a607779ec2cb740517f7', 'orgname': '业务中心', 'level': 1, '_id': '5ce247ad21c8a35d0f1cd147'}, {'pid': '5ce247ad21c8a35d0f1cd147', 'orgname': '华为事业部', 'level': 2, '_id': '5742a607779ec2cb740517f8'}, {'pid': '5742a607779ec2cb740517f8', 'orgname': '西南区', 'level': 3, '_id': '5742a607779ec2cb740517ff'}, {'pid': '5742a607779ec2cb740517ff', 'orgname': '成都办事处', 'level': 4, '_id': '5ce24eda73e8ba570f435458'}], '_id': '5742a607779ec2cb740518ff', 'name': '何晋', 'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', 'login': 'hejin'}, 'corp': '1000', 'client': {'realname': '华为软件技术有限公司', 'name': '华为软件技术有限公司', 'id': '1000006065'}}}, 'findFutureCandidates': [], 'nodeId': '5d12e40fcc32106ba68caa2d', 'nodeIndex': 2, 'nodeStatus': 'active', 'nodeType': 'product_director', 'property': {'type': 'JCD', 'createDate': '2019-06-23T07:22:22.109Z', 'finishDate': '2019-06-26T03:18:39.784Z', 'printed': 0, 'status': 'active'}, 'processlog': [{'sender': {'orgname': '成都办事处', 'orgid': '5ce24eda73e8ba570f435458', '_id': '5742a607779ec2cb740518ff', 'login': 'hejin', 'name': '何晋'}, 'first': True, 'keepDate': '', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d0f28af42a6c1b24f9c4b49', 'status': '', 'operation': '提交', 'nodetype': 'init', 'finishDate': '2019-06-23T07:22:23.456Z', 'content': {'comment': '申请审批', 'changes': []}, 'nodeid': '5d0f28aec299fdbe4fef83e7'}, {'sender': {'orgname': '库存组', 'orgid': '5ce24cba73e8ba570f435438', 'login': 'houwenjie', 'name': '侯文杰', '_id': '5742a607779ec2cb74051aad'}, 'first': True, 'operation': '通过', 'createDate': '2019-06-23T07:22:23.456Z', '_id': '5d12e40fcc32106ba68caa2c', 'status': '', 'keepDate': '2天19小时57分', 'nodetype': 'supplychain', 'finishDate': '2019-06-26T03:18:39.753Z', 'content': {'changes': []}, 'nodeid': '5d0f28af42a6c1b24f9c4b4b'}, {'lastNode': True, 'first': True, 'keepDate': '1分', 'createDate': '2019-06-26T03:18:39.753Z', 'sender': {'orgname': '华为事业部', '_id': '5853a876f56ac94516a624f9', 'login': 'mengyu', 'name': '孟育'}, 'nodestatus': 'active', 'finishDate': None, 'operation': '待处理', 'nodetype': 'product_director', 'content': {'comment': '', 'changes': []}, 'nodeid': '5d12e40fcc32106ba68caa2d'}]}, 'msg': 'OK'}
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🔼 code 的值为： 200
+🐱‍👤 案例执行结果为:
+ {
+    "code": 30,
+    "msg": "审批内部错误- processPass service call onComplete error: {\"message\":\"ProductLend validation failed\",\"name\":\"ValidationError\",\"errors\":{\"oldproducts.0.changednum\":{\"message\":\"Cast to Number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"Number\",\"value\":null,\"path\":\"changednum\",\"reason\":{\"message\":\"Cast to number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"number\",\"value\":null,\"path\":\"changednum\"}},\"products.0.changednum\":{\"message\":\"Cast to Number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"Number\",\"value\":null,\"path\":\"changednum\",\"reason\":{\"message\":\"Cast to number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"number\",\"value\":null,\"path\":\"changednum\"}}}}",
+    "rst": "service call onComplete error: {\"message\":\"ProductLend validation failed\",\"name\":\"ValidationError\",\"errors\":{\"oldproducts.0.changednum\":{\"message\":\"Cast to Number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"Number\",\"value\":null,\"path\":\"changednum\",\"reason\":{\"message\":\"Cast to number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"number\",\"value\":null,\"path\":\"changednum\"}},\"products.0.changednum\":{\"message\":\"Cast to Number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"Number\",\"value\":null,\"path\":\"changednum\",\"reason\":{\"message\":\"Cast to number failed for value \\\"NaN\\\" at path \\\"changednum\\\"\",\"name\":\"CastError\",\"kind\":\"number\",\"value\":null,\"path\":\"changednum\"}}}}"
+}
+🎈流程即将结束！
+Traceback (most recent call last):
+  File "E:\python相关\接口\项目\API自动化工程\excel_config\excel_data.py", line 385, in checkTheMessage
+    %(args[args.__len__()-1],textToTest,myMessage)
+AssertionError: 😭 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '30' 不相等！
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\python相关\接口\项目\API自动化工程\interface\Test_审批流处理.py", line 780, in test08_agree_02
+    raise e
+  File "E:\python相关\接口\项目\API自动化工程\interface\Test_审批流处理.py", line 773, in test08_agree_02
+    checkTheMessage("code",varNameInExcel="code")
+  File "E:\python相关\接口\项目\API自动化工程\excel_config\excel_data.py", line 389, in checkTheMessage
+    raise AssertionError(e)
+AssertionError: 😭 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '30' 不相等！
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test09_get_list_02: [第二岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.10')" >
+        成功</a>
+
+    <div id='div_pt1.10' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.10').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.10: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test09_get_list_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_get_mydoing_03: [第三岗] 第三岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.11')" >
+        成功</a>
+
+    <div id='div_pt1.11' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.11').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.11: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test10_get_mydoing_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_get_detail_03: [第三岗] 第三岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.12')" >
+        成功</a>
+
+    <div id='div_pt1.12' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.12').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.12: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test11_get_detail_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_agree_03: [第三岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.13')" >
+        成功</a>
+
+    <div id='div_pt1.13' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.13').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.13: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test12_agree_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test13_get_list_03: [第三岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.14')" >
+        成功</a>
+
+    <div id='div_pt1.14' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.14').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.14: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test13_get_list_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test14_get_mydoing_04: [第四岗] 第四岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.15')" >
+        成功</a>
+
+    <div id='div_pt1.15' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.15').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.15: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test14_get_mydoing_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test15_get_detail_04: [第四岗] 第四岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.16')" >
+        成功</a>
+
+    <div id='div_pt1.16' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.16').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.16: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test15_get_detail_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test16_agree_04: [第四岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.17')" >
+        成功</a>
+
+    <div id='div_pt1.17' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.17').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.17: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test16_agree_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test17_get_list_04: [第四岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.18')" >
+        成功</a>
+
+    <div id='div_pt1.18' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.18').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.18: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test17_get_list_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test18_get_mydoing_05: [第五岗] 第五岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.19')" >
+        成功</a>
+
+    <div id='div_pt1.19' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.19').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.19: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test18_get_mydoing_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test19_get_detail_05: [第五岗] 第五岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.20')" >
+        成功</a>
+
+    <div id='div_pt1.20' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.20').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.20: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test19_get_detail_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test20_agree_05: [第五岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.21')" >
+        成功</a>
+
+    <div id='div_pt1.21' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.21').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.21: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test20_agree_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test21_get_list_05: [第五岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.22')" >
+        成功</a>
+
+    <div id='div_pt1.22' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.22').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.22: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test21_get_list_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test22_get_mydoing_06: [第六岗] 第六岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.23')" >
+        成功</a>
+
+    <div id='div_pt1.23' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.23').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.23: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test22_get_mydoing_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test23_get_detail_06: [第六岗] 第六岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.24')" >
+        成功</a>
+
+    <div id='div_pt1.24' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.24').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.24: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test23_get_detail_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.25' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test24_agree_06: [第六岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.25')" >
+        成功</a>
+
+    <div id='div_pt1.25' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.25').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.25: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test24_agree_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.26' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_get_list_06: [第六岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.26')" >
+        成功</a>
+
+    <div id='div_pt1.26' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.26').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.26: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test25_get_list_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test26_get_mydoing_07: [第七岗] 第七岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.27')" >
+        成功</a>
+
+    <div id='div_pt1.27' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.27').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.27: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test26_get_mydoing_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test27_get_detail_07: [第七岗] 第七岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.28')" >
+        成功</a>
+
+    <div id='div_pt1.28' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.28').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.28: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test27_get_detail_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.29' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test28_agree_07: [第七岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.29')" >
+        成功</a>
+
+    <div id='div_pt1.29' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.29').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.29: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test28_agree_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.30' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test29_get_list_07: [第七岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.30')" >
+        成功</a>
+
+    <div id='div_pt1.30' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.30').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.30: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test29_get_list_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.31' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test30_get_mydoing_08: [第八岗] 第八岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.31')" >
+        成功</a>
+
+    <div id='div_pt1.31' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.31').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.31: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test30_get_mydoing_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.32' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test31_get_detail_08: [第八岗] 第八岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.32')" >
+        成功</a>
+
+    <div id='div_pt1.32' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.32').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.32: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test31_get_detail_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.33' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test32_agree_08: [第八岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.33')" >
+        成功</a>
+
+    <div id='div_pt1.33' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.33').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.33: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test32_agree_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.34' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test33_get_list_08: [第八岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.34')" >
+        成功</a>
+
+    <div id='div_pt1.34' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.34').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.34: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test33_get_list_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.35' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test34_get_mydoing_09: [第九岗] 第九岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.35')" >
+        成功</a>
+
+    <div id='div_pt1.35' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.35').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.35: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test34_get_mydoing_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.36' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test35_get_detail_09: [第九岗] 第九岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.36')" >
+        成功</a>
+
+    <div id='div_pt1.36' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.36').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.36: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test35_get_detail_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.37' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test36_agree_09: [第九岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.37')" >
+        成功</a>
+
+    <div id='div_pt1.37' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.37').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.37: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test36_agree_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.38' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test37_get_list_09: [第九岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.38')" >
+        成功</a>
+
+    <div id='div_pt1.38' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.38').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.38: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test37_get_list_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.39' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test38_get_mydoing_10: [第十岗] 第十岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.39')" >
+        成功</a>
+
+    <div id='div_pt1.39' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.39').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.39: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test38_get_mydoing_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.40' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test39_get_detail_10: [第十岗] 第十岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.40')" >
+        成功</a>
+
+    <div id='div_pt1.40' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.40').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.40: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test39_get_detail_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.41' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test40_agree_10: [第十岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.41')" >
+        成功</a>
+
+    <div id='div_pt1.41' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.41').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.41: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test40_agree_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.42' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test41_get_list_10: [第十岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.42')" >
+        成功</a>
+
+    <div id='div_pt1.42' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.42').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.42: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test41_get_list_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.43' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test42_check_status: admin登陆，查询单据状态，校验是否审批结束</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.43')" >
+        成功</a>
+
+    <div id='div_pt1.43' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.43').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.43: 📌流程开关中有值，流程终止！
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 审批流类型 的值为： 借出单
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test42_check_status 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>汇总</td>
+    <td>43</td>
+    <td class="text text-success">42</td>
+    <td class="text text-danger">1</td>
+    <td class="text text-warning">0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "异常",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 1,
+		color : "#faebcc",
+		label: "失败",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 42,
+		color : "#d6e9c6",
+		label : "成功",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
+</body>
+</html>

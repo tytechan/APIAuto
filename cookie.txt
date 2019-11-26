@@ -1,0 +1,5 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+kintergration01.chinacloudapp.cn	FALSE	/	FALSE	1553846175	connect.sid	s%3A0sY_6jdxZ5Mz9DLTM77MHszsEtNLFaa2.dWFHcw%2FaSG4cS8YfNHskmmtiLFfklMVn4mR9F%2B2aFCw

@@ -1,0 +1,1998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>"审批流处理"自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
+    
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 100%; }
+table       { font-size: 110%; }
+pre         {  }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 20pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+	margin-left: 10px;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 12pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+    margin-left: 10px;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+    margin-left: 10px;
+}
+#header_row {
+    font-weight: bold;
+    color: #606060;
+    background-color: #f5f5f5;
+    border-top-width: 10px;
+    border-color: #d6e9c6;
+	font-size: 14px;
+}
+#result_table td {
+    border: 1px solid #f5f5f5;
+    padding: 2px;
+
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>"审批流处理"自动化测试报告</h1>
+<p class='attribute'><strong>执行时间:</strong> 2019-08-15 18:58:08</p>
+<p class='attribute'><strong>执行时长:</strong> 0:01:53.662013</p>
+<p class='attribute'><strong>执行结果:</strong> 成功 43</p>
+
+<p class='description'>运行环境：510</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> 执行结果饼状图 </p>
+	<a class="btn btn-xs btn-info1">-成功-</a><br>
+	<a class="btn btn-xs btn-info2">-失败-</a><br>
+	<a class="btn btn-xs btn-info3">-异常-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
+
+
+<p id='show_detail_line' style="margin-left: 10px;">显示
+<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">摘要</a>
+<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">失败</a>
+<a href='javascript:showCase(2)' class="btn btn-xs btn-info">全部</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="panel-title">
+    <td>测试步骤/功能点</td>
+    <td>执行总数</td>
+    <td>成功</td>
+    <td>失败</td>
+    <td>异常</td>
+    <td>详情</td>
+</tr>
+
+<tr class='passClass'>
+    <td>Test_审批流处理.CaigouContractsTest:  审批流处理 </td>
+    <td>43</td>
+    <td>43</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',43)">详情</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_get_list_01: admin登陆，获取审批流processid、当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        成功</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+📦 返回值 审批状态 为: 
+🔼 数据表中 管理员登录名 的值为： admin
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 单据号 的值为： KPSQNA201907000009
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+📦 返回值 审批状态 为: 非审批中
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "approval_status": "2",
+        "data": {
+            "items": [],
+            "total": 0,
+            "totalpage": 0
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_get_mydoing_01: admin登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.2')" >
+        成功</a>
+
+    <div id='div_pt1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.2: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test01_get_list_01
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 成功
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test02_get_mydoing_01 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_get_detail_01: [第一岗] 查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')" >
+        成功</a>
+
+    <div id='div_pt1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.3: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test02_get_mydoing_01
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test03_get_detail_01 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_get_detail_02: [第一岗] 审批流为“销售合同”，且配套服务为“1”时，维护成本分析信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
+        成功</a>
+
+    <div id='div_pt1.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.4: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test03_get_detail_01
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /contract/savecost
+🎈案例 test03_get_detail_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_agree_01: [第一岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.5')" >
+        成功</a>
+
+    <div id='div_pt1.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.5: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test03_get_detail_02
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test04_agree_01 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_get_list_01: [第一岗] 审批后用上一岗节点信息查询下一节点处理人（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.6')" >
+        成功</a>
+
+    <div id='div_pt1.6' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.6').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.6: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test04_agree_01
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test05_get_list_01 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_get_mydoing_02: [第二岗] 第二岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.7')" >
+        成功</a>
+
+    <div id='div_pt1.7' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.7').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.7: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test05_get_list_01
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test06_get_mydoing_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_get_detail_02: [第二岗] 第二岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.8')" >
+        成功</a>
+
+    <div id='div_pt1.8' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.8').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.8: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test06_get_mydoing_02
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test07_get_detail_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_agree_02: [第二岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.9')" >
+        成功</a>
+
+    <div id='div_pt1.9' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.9').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.9: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test07_get_detail_02
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test08_agree_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test09_get_list_02: [第二岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.10')" >
+        成功</a>
+
+    <div id='div_pt1.10' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.10').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.10: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test08_agree_02
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test09_get_list_02 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_get_mydoing_03: [第三岗] 第三岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.11')" >
+        成功</a>
+
+    <div id='div_pt1.11' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.11').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.11: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test09_get_list_02
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test10_get_mydoing_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_get_detail_03: [第三岗] 第三岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.12')" >
+        成功</a>
+
+    <div id='div_pt1.12' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.12').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.12: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test10_get_mydoing_03
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test11_get_detail_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_agree_03: [第三岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.13')" >
+        成功</a>
+
+    <div id='div_pt1.13' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.13').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.13: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test11_get_detail_03
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test12_agree_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test13_get_list_03: [第三岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.14')" >
+        成功</a>
+
+    <div id='div_pt1.14' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.14').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.14: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test12_agree_03
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test13_get_list_03 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test14_get_mydoing_04: [第四岗] 第四岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.15')" >
+        成功</a>
+
+    <div id='div_pt1.15' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.15').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.15: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test13_get_list_03
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test14_get_mydoing_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test15_get_detail_04: [第四岗] 第四岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.16')" >
+        成功</a>
+
+    <div id='div_pt1.16' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.16').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.16: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test14_get_mydoing_04
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test15_get_detail_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test16_agree_04: [第四岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.17')" >
+        成功</a>
+
+    <div id='div_pt1.17' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.17').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.17: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test15_get_detail_04
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test16_agree_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test17_get_list_04: [第四岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.18')" >
+        成功</a>
+
+    <div id='div_pt1.18' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.18').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.18: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test16_agree_04
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test17_get_list_04 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test18_get_mydoing_05: [第五岗] 第五岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.19')" >
+        成功</a>
+
+    <div id='div_pt1.19' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.19').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.19: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test17_get_list_04
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test18_get_mydoing_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test19_get_detail_05: [第五岗] 第五岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.20')" >
+        成功</a>
+
+    <div id='div_pt1.20' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.20').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.20: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test18_get_mydoing_05
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test19_get_detail_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test20_agree_05: [第五岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.21')" >
+        成功</a>
+
+    <div id='div_pt1.21' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.21').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.21: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test19_get_detail_05
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test20_agree_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test21_get_list_05: [第五岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.22')" >
+        成功</a>
+
+    <div id='div_pt1.22' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.22').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.22: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test20_agree_05
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test21_get_list_05 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test22_get_mydoing_06: [第六岗] 第六岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.23')" >
+        成功</a>
+
+    <div id='div_pt1.23' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.23').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.23: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test21_get_list_05
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test22_get_mydoing_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test23_get_detail_06: [第六岗] 第六岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.24')" >
+        成功</a>
+
+    <div id='div_pt1.24' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.24').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.24: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test22_get_mydoing_06
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test23_get_detail_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.25' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test24_agree_06: [第六岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.25')" >
+        成功</a>
+
+    <div id='div_pt1.25' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.25').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.25: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test23_get_detail_06
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test24_agree_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.26' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_get_list_06: [第六岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.26')" >
+        成功</a>
+
+    <div id='div_pt1.26' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.26').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.26: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test24_agree_06
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test25_get_list_06 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test26_get_mydoing_07: [第七岗] 第七岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.27')" >
+        成功</a>
+
+    <div id='div_pt1.27' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.27').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.27: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test25_get_list_06
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test26_get_mydoing_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test27_get_detail_07: [第七岗] 第七岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.28')" >
+        成功</a>
+
+    <div id='div_pt1.28' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.28').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.28: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test26_get_mydoing_07
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test27_get_detail_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.29' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test28_agree_07: [第七岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.29')" >
+        成功</a>
+
+    <div id='div_pt1.29' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.29').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.29: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test27_get_detail_07
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test28_agree_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.30' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test29_get_list_07: [第七岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.30')" >
+        成功</a>
+
+    <div id='div_pt1.30' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.30').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.30: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test28_agree_07
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test29_get_list_07 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.31' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test30_get_mydoing_08: [第八岗] 第八岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.31')" >
+        成功</a>
+
+    <div id='div_pt1.31' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.31').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.31: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test29_get_list_07
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test30_get_mydoing_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.32' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test31_get_detail_08: [第八岗] 第八岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.32')" >
+        成功</a>
+
+    <div id='div_pt1.32' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.32').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.32: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test30_get_mydoing_08
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test31_get_detail_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.33' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test32_agree_08: [第八岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.33')" >
+        成功</a>
+
+    <div id='div_pt1.33' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.33').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.33: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test31_get_detail_08
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test32_agree_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.34' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test33_get_list_08: [第八岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.34')" >
+        成功</a>
+
+    <div id='div_pt1.34' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.34').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.34: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test32_agree_08
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test33_get_list_08 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.35' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test34_get_mydoing_09: [第九岗] 第九岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.35')" >
+        成功</a>
+
+    <div id='div_pt1.35' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.35').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.35: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test33_get_list_08
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test34_get_mydoing_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.36' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test35_get_detail_09: [第九岗] 第九岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.36')" >
+        成功</a>
+
+    <div id='div_pt1.36' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.36').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.36: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test34_get_mydoing_09
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test35_get_detail_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.37' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test36_agree_09: [第九岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.37')" >
+        成功</a>
+
+    <div id='div_pt1.37' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.37').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.37: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test35_get_detail_09
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test36_agree_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.38' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test37_get_list_09: [第九岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.38')" >
+        成功</a>
+
+    <div id='div_pt1.38' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.38').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.38: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test36_agree_09
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test37_get_list_09 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.39' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test38_get_mydoing_10: [第十岗] 第十岗登陆，获取当前节点nodeid</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.39')" >
+        成功</a>
+
+    <div id='div_pt1.39' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.39').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.39: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test37_get_list_09
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /approval/mydoing
+🎈案例 test38_get_mydoing_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.40' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test39_get_detail_10: [第十岗] 第十岗登陆，查询单据详细信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.40')" >
+        成功</a>
+
+    <div id='div_pt1.40' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.40').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.40: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test38_get_mydoing_10
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /detail
+🎈案例 test39_get_detail_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.41' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test40_agree_10: [第十岗] 审批</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.41')" >
+        成功</a>
+
+    <div id='div_pt1.41' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.41').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.41: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test39_get_detail_10
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 调用接口 的值为： /agree
+🎈案例 test40_agree_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.42' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test41_get_list_10: [第十岗] 审批后用上一岗节点信息查询当前岗用户名（验证单据审批状态）</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.42')" >
+        成功</a>
+
+    <div id='div_pt1.42' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.42').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.42: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test40_agree_10
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🎈案例 test41_get_list_10 在本流程中跳过...
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.43' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test42_check_status: admin登陆，查询单据状态，校验是否审批结束</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.43')" >
+        成功</a>
+
+    <div id='div_pt1.43' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.43').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.43: 📌该案例正常执行！
+🔼 全局变量 DATASHEETNAME 的值为： 数据表-审批流处理
+🔼 全局变量 ENVIRONMENT 的值为： 510
+🔼 全局变量 MODULENAME 的值为： 审批流处理
+🔼 全局变量 CASENAME 的值为： test41_get_list_10
+🔼 全局变量 RESULT 的值为： {'code': 200, 'msg': 'OK', 'rst': {'data': {'items': [], 'total': 0, 'totalpage': 0}, 'approval_status': '2'}}
+🔼 全局变量 TESTRESULT 的值为： 跳过
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 #审批状态 的值为： 非审批中
+🔼 登陆接口 的值为： /login
+🔼 调用接口 的值为： /list
+🔼 数据表中 管理员登录名 的值为： admin
+🔼 数据表中 登陆密码 的值为： 12345sap
+🔼 数据表中 审批流类型 的值为： 开票申请
+🔼 数据表中 单据号 的值为： KPSQNA201907000009
+🔼 code 的值为： 200
+😜 响应报文中校验字段 'code' 中， 
+预期值 '200' 和实际值 '200' 相等！
+🔼 msg 的值为： OK
+😜 响应报文中校验字段 'msg' 中， 
+预期值 'OK' 和实际值 'OK' 相等！
+🎈流程即将结束！
+📦 返回值 审批状态 为: 审批成功
+🐱‍👤 案例执行结果为:
+ {
+    "code": 200,
+    "msg": "OK",
+    "rst": {
+        "approval_status": "1",
+        "data": {
+            "items": [
+                {
+                    "BUKRS": "1000",
+                    "XBLNR": "KPSQNA201907000009",
+                    "ZFPLX": "FP6",
+                    "_id": "5d366eb7b78f502af25c3d6b",
+                    "contractno": "STOBA19070004",
+                    "cusname": "中建材信息技术股份有限公司",
+                    "hasprint": false,
+                    "htxx": [
+                        {
+                            "DXKZWI1": 0,
+                            "LFSTK": "C",
+                            "SODXVBELN": "",
+                            "_id": "5d366eb7d9405b4a8ecc6f24",
+                            "contractmoney": 100,
+                            "contractno": "STOBA19070004",
+                            "contracttype": "ZSTO",
+                            "groupno": "STOBA19070004",
+                            "invoice_bckp": 100,
+                            "kjpz": "0400000004",
+                            "receipttype": "",
+                            "salesgroup": "1199",
+                            "salesorgid": "",
+                            "sapdxkpzje": 0,
+                            "sapinvoicezje": 100,
+                            "sapinvoicezse": 11.5,
+                            "xsfpno": "9000052898",
+                            "zdfhje": 100
+                        }
+                    ],
+                    "invoiceamount": 100,
+                    "orderVersion": "newVersion",
+                    "printed": 0,
+                    "sjkpsj": "2019-07-23T00:00:00.000Z",
+                    "statusofrecbill": 0,
+                    "user": "刘凯",
+                    "wldetail": [
+                        {
+                            "MATNR": "01060779-NF1",
+                            "_id": "5d366eb7d9405b4a8ecc6f1d",
+                            "contractno": "STOBA19070004",
+                            "dnno": "8000084979",
+                            "dnposnr": "000010",
+                            "dntype": "正常放货",
+                            "invoice_bckp": 100,
+                            "jhdj_dn": 100,
+                            "matnrtype": "ZCP1",
+                            "num_bckp": 1,
+                            "rate": "13%",
+                            "sapdxkpzje": 0,
+                            "sapinvoicezje": 100,
+                            "sapinvoicezse": 11.5,
+                            "soposnr": "000010",
+                            "wkpno": 1,
+                            "xsfpno": "9000052898"
+                        }
+                    ]
+                }
+            ],
+            "total": 1,
+            "totalpage": 1
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>汇总</td>
+    <td>43</td>
+    <td class="text text-success">43</td>
+    <td class="text text-danger">0</td>
+    <td class="text text-warning">0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "异常",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 0,
+		color : "#faebcc",
+		label: "失败",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 43,
+		color : "#d6e9c6",
+		label : "成功",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
+</body>
+</html>
